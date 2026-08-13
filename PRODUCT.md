@@ -55,7 +55,7 @@ Real, verified from the repositories (not to be embellished):
 - **Agentic sales-automation pipeline** (private repo) — orchestrates web scraping, lead enrichment, automated email outreach, and call qualification for sourcing potential acquisition targets; migrated from local Docker to a Linux VM on Oracle Cloud Infrastructure for persistent cloud execution. Client-identifying material is under NDA; no client may be named and the repo may not be linked.
 - **Forecast accuracy pipeline** (`digital_operations`, public, 12 commits) — Walmart sales forecast ETL computing MAD, MAPE, sales-to-forecast ratio, and bias, exporting a multi-sheet Excel report built on live SUMPRODUCT formulas rather than static values.
 - **NLP / LDA topic modeling** (`NLPs`, public, 16 commits) — 24-topic LDA over the middle-1000 companies by market cap, cross-tabulated against GICS industry groups. Measured coherence: Utilities 96.2%, Insurance 95.0%, Banks 91.8%, Semiconductors 81.2%, Autos 71.4%.
-- **Professional background** — HCA Healthcare Analytics Engineer Intern (Databricks/PySpark Medallion ETL, Power BI, Azure Key Vault monitoring); Metlang Analytic Linguist with security clearance; LJW Associates project manager. Cornell MSBA candidate (May 2026), MTSU BA Foreign Languages magna cum laude.
+- **Professional background** — HCA Healthcare Analytics Engineer Intern (Databricks/PySpark Medallion ETL, Power BI, Azure Key Vault monitoring); Metlang Analytic Linguist with security clearance; LJW Associates project manager. Cornell MSBA, completed 2026, MTSU BA Foreign Languages magna cum laude.
 - **Leadership** — President, Cornell Data Science Club (Aug 2025–present).
 
 Absences that must not be fabricated: no stars, no downloads, no users, no App Store release, no press, no testimonials, no employer endorsements, no revenue. `localai_app` is a Kotlin Multiplatform **scaffold** whose chat responses are explicitly fake — it may not be presented as a second shipping app.
@@ -65,7 +65,7 @@ Added after the first review round (all verified in the repositories):
 - **Retail operations** (`digital_retail_operations`, public) — five notebooks: ingestion and quality checks, demand patterns/EDA, basket analysis and cross-sell, forecasting and staffing model, operational recommendations. Real committed outputs: `association_rules.csv`, `staffing_plan.csv`, `hourly_profile.csv`, `weekday_hour_profile.csv`, `top_products.csv`, `executive_summary.csv`, plus demand-pattern and staffing-heatmap figures. Low commit count (3) but substantial content — commit count is not a proxy for depth here.
 - **Supply chain optimization** (`Supply_Chain`, public, 20 commits) — graduate coursework: inventory optimization to maximise supply-chain efficiency, and production capacity allocation under constraint. Python plus Excel deliverables. **The repository also contains assignment briefs and `U2_ANSWER_KEY.txt`; the user was told to prune these.** Featured at the user's explicit request after the exclusion was raised.
 - **Revenue forecasting** (`Predictive_Analytics`, private, 7 commits) — real QuickBooks exports; revenue defined strictly as invoice issuance, normalized monthly, deliberately conservative one-year projection with complex models avoided to prevent inflated valuation inputs. Private; no client named.
-- **Demand management** (`Demand_Management`, private, 11 commits) — pricing-optimization coursework with an ingestion layer (Excel read/validate) and processing layer (case-level to unit-level, margin/market-share/profit metrics).
+- **Demand management** (`Demand_Management`, **public as of 2026-08-13**, 11 commits) — pricing-optimization coursework with an ingestion layer (Excel read/validate) and processing layer (case-level to unit-level, margin/market-share/profit metrics).
 - **AlphaAgent_Deck** (public, 4 commits) — Python that generates a pitch deck, use-of-funds model, and monthly projection workbook from code.
 - **VisionClaw is NOT the user's work** and must never appear. Removed 2026-08-13 on the user's correction.
 
@@ -82,3 +82,12 @@ Model-comparison rows for VC Scout (OLS, Ridge alpha=30, Lasso alpha=0.005, KNN 
 ## Accessibility & Inclusion
 
 No user-specific requirement was established. Standard obligations apply: WCAG AA contrast, keyboard-operable navigation, visible focus, semantic landmarks and heading order, respect for `prefers-reduced-motion`, and full content legibility without JavaScript.
+
+## Corrections logged 2026-08-13
+
+- Nathanael **completed** the Cornell MS in Business Analytics in 2026. He is no longer a candidate; page copy updated in the title block and the closing cue.
+- The GitHub handle `nathanaelguitar` dates from opening the account to learn Python on DataCamp. An earlier draft invented "older than the career and I have stopped trying to explain it" — that was fabricated and is removed. **Do not invent biographical colour.**
+- `VisionClaw` is not his work. Never include it.
+- The private "iOS agent client" row was removed at his request.
+- `Demand_Management` made public after untracking `bana6390_u3_answer.md`, `q4_answer.md`, `q5_answer.md`, `__pycache__`.
+- `Predictive_Analytics` **must not be made public as-is**: `data/2021_sales.xls` through `2025_sales.xls` and `data/sales.desc` are committed real QuickBooks exports containing a customer-name column, directly contradicting that repo's own `.gitignore` ("Data files (confidential)"), its `data/README.md` ("excluded from version control for confidentiality"), and its `scripts/check_no_data_committed.py` guard. Flipping a private repo to public exposes full history, so untracking at HEAD is not sufficient.
