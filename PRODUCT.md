@@ -102,3 +102,9 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - Venue changed from Nashville/Ithaca (past job/school cities) to New York, NY and San Francisco, CA (target markets) — job-history location mentions elsewhere on the page (HCA in Nashville, Cornell in Ithaca) are unchanged since those are factual employment/education locations, not "venue."
 - VC Scout capstone team fully named: Mia Murphy, Finn Kliewer, Kayvon Jafarzadeh, Om Patel, Nathanael Gill. Do not add unverifiable honorifics about any teammate (e.g. "prominent AI creator") — state only what the repo confirms (name, GitHub handle, that the repo is forked from his original).
 - Live interactive VC Scout dashboard linked: `dashboards/VC-Scout-Dashboard.html`, confirmed serving at 200 via GitHub Pages.
+
+## Corrections logged 2026-08-13 (fourth round)
+
+- Positioning language realigned to the user's own LinkedIn self-description and stated open-to-work titles: headline "Data & AI/ML Engineering", job titles Data Scientist, AI Engineer, Forward Deployed Engineer, AI/ML Developer, AI Consultant, Analytics Engineer. Title-block "Discipline" and the closing cue's CTA updated to match. Do not revert to the earlier "ML & analytics engineering" phrasing.
+- FDE (Forward Deployed Engineer) added to the closing cue's role list at the user's explicit request.
+- Confirmed target locations from the user's own LinkedIn "Open to Work" settings: on-site in SF Bay Area / NYC metro (primary two — page venue already matches), also Dallas-Fort Worth, Miami-Fort Lauderdale, Chicago; remote also LA, DC, San Jose. Page venue stays at NYC/SF as the lead two; do not expand the title-block Venue field to the full list, it would overload that cell.
