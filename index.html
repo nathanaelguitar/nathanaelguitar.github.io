@@ -12,8 +12,16 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Crect y='19' width='32' height='2' fill='%230A2BFF'/%3E%3Crect y='21' width='32' height='11' fill='%23D24BFF' opacity='.55'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Saira:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* The display voice is self-hosted: a CDN failure must never drop the focal
+   element to a system face. */
+@font-face{
+  font-family:"Saira Stencil One";
+  src:url("fonts/saira-stencil-one-latin.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
 /* ============================================================
    CYCLORAMA — the light field
    ============================================================ */
@@ -24,7 +32,7 @@
   --lit:#FFFFFF;
   --ink:#240A1B;
 
-  --stencil:"Saira Stencil One","Saira Condensed",Impact,sans-serif;
+  --stencil:"Saira Stencil One","Saira Condensed","Saira",sans-serif;
   --sans:"Saira",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
 
@@ -50,9 +58,11 @@ body{
 img,svg{max-width:100%;display:block}
 a{color:inherit}
 
-/* --- fine grain: the cyclorama's absorbent matte surface --- */
+/* --- fine grain: the cyclorama's absorbent matte surface ---
+   z-index 0 so it textures the light field but never composites over type;
+   .wrap lifts all content above it. --- */
 .grain{
-  position:fixed; inset:0; z-index:80; pointer-events:none;
+  position:fixed; inset:0; z-index:0; pointer-events:none;
   opacity:.32; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
@@ -70,13 +80,18 @@ h1,h2,h3,h4{font-weight:400;margin:0;text-wrap:balance}
   line-height:.9; letter-spacing:.005em; text-transform:uppercase;
   margin:0;
 }
+/* the cue address is the section's permalink, mirrored in the fixed rail —
+   it is wayfinding, not a label above a heading */
 .addr{
   font-family:var(--mono); font-weight:700;
   font-size:clamp(.8rem,1.5vw,.95rem); letter-spacing:.2em;
   display:inline-flex; align-items:center; gap:.7em;
-  opacity:.9;
+  opacity:.9; text-decoration:none; width:fit-content;
+  transition:opacity .25s ease;
 }
 .addr::after{content:"";flex:1 0 2.5rem;height:1px;background:currentColor;opacity:.45}
+.addr:hover,.addr:focus-visible{opacity:1}
+.addr:hover::after,.addr:focus-visible::after{opacity:.9}
 
 h3{
   font-family:var(--sans); font-weight:600;
@@ -98,12 +113,20 @@ p:last-child{margin-bottom:0}
 main{display:block}
 .cue{display:block}
 
+/* Full-bleed openings are spent only on the cues that carry a real light event
+   (10 night, 20 cobalt, 40 rose gather, 60 daybreak, 90 day). The rest hold a
+   short band so the scroll does not pay for nine identical empty screens. */
 .open{
-  min-height:clamp(26rem,68vh,38rem);
+  min-height:clamp(15rem,38vh,21rem);
   display:flex; flex-direction:column; justify-content:flex-end;
-  padding:clamp(4rem,12vh,9rem) var(--gut) clamp(5.5rem,24vh,11rem);
+  padding:clamp(3rem,8vh,5rem) var(--gut) clamp(3.5rem,13vh,6rem);
   padding-right:calc(var(--gut) + var(--rail));
   position:relative; overflow:hidden;
+}
+.open--full{
+  min-height:clamp(26rem,68vh,38rem);
+  padding-top:clamp(4rem,12vh,9rem);
+  padding-bottom:clamp(5.5rem,24vh,11rem);
 }
 /* the horizon: where the light gathers, behind the type */
 .open::before{
@@ -123,47 +146,67 @@ main{display:block}
   padding-right:calc(var(--gut) + var(--rail));
 }
 /* width:100% — auto margins on a flex item override stretch and shrink to content */
-.wrap{width:100%;max-width:74rem;margin:0 auto}
+.wrap{width:100%;max-width:74rem;margin:0 auto;position:relative;z-index:1}
 
 /* ---- light states: holds ---- */
 .h00{background:#050506}
 .h10{background:#060B22}
-.h20{background:#071A55}
-.h30{background:#142A86}
-.h40{background:#6A1FA8}
-.h50{background:#A32C7A}
-.h60{background:#D9518F}
-.h70{background:#FFD7E6}
-.h80{background:#FFE9F0}
-.h90{background:#FFFFFF}
+.h20{background:#071640}
+.h30{background:#0A2060}
+.h40{background:#142A86}
+.h50{background:#2A1E92}
+.h60{background:#4A1F9E}
+.h70{background:#6A1FA8}
+.h80{background:#8B2596}
+.h90{background:#A32C7A}
+.h100{background:#D9518F}
+.h110{background:#FFD7E6}
+.h120{background:#FFFFFF}
 
 /* ---- light states: fades ---- */
 /* the light peaks high in the band, so the pure hue floods the viewport
    while the type below it sits on a ground that still clears 4.5:1 */
 .f10{background:linear-gradient(180deg,#050506 0%,#0A1A6E 40%,#060B22 100%)}
-.f20{background:linear-gradient(180deg,#060B22 0%,#0A2BFF 42%,#071A55 100%)}
-.f30{background:linear-gradient(180deg,#071A55 0%,#2A44FF 42%,#142A86 100%)}
-.f40{background:linear-gradient(180deg,#142A86 0%,#D24BFF 42%,#6A1FA8 100%)}
-.f50{background:linear-gradient(180deg,#6A1FA8 0%,#C13FC9 42%,#A32C7A 100%)}
-.f60{background:linear-gradient(180deg,#A32C7A 0%,#FF7BAE 45%,#D9518F 100%)}
-.f70{background:linear-gradient(180deg,#D9518F 0%,#FFA9C8 42%,#FFD7E6 100%)}
-.f80{background:linear-gradient(180deg,#FFD7E6 0%,#FFF4F8 40%,#FFE9F0 100%)}
-.f90{background:linear-gradient(180deg,#FFE9F0 0%,#FFFFFF 45%,#FFFFFF 100%)}
+.f20{background:linear-gradient(180deg,#060B22 0%,#0A2BFF 42%,#071640 100%)}
+.f30{background:linear-gradient(180deg,#071640 0%,#1B3AF5 42%,#0A2060 100%)}
+.f40{background:linear-gradient(180deg,#0A2060 0%,#2A44FF 42%,#142A86 100%)}
+.f50{background:linear-gradient(180deg,#142A86 0%,#4B3BFF 42%,#2A1E92 100%)}
+.f60{background:linear-gradient(180deg,#2A1E92 0%,#7A3BE8 42%,#4A1F9E 100%)}
+.f70{background:linear-gradient(180deg,#4A1F9E 0%,#A03BD8 42%,#6A1FA8 100%)}
+.f80{background:linear-gradient(180deg,#6A1FA8 0%,#D24BFF 42%,#8B2596 100%)}
+.f90{background:linear-gradient(180deg,#8B2596 0%,#C13FC9 42%,#A32C7A 100%)}
+.f100{background:linear-gradient(180deg,#A32C7A 0%,#FF7BAE 45%,#D9518F 100%)}
+.f110{background:linear-gradient(180deg,#D9518F 0%,#FFA9C8 42%,#FFD7E6 100%)}
+.f120{background:linear-gradient(180deg,#FFD7E6 0%,#FFFFFF 45%,#FFFFFF 100%)}
 
 /* ---- ink assignment, per light state ---- */
 .lit{color:var(--lit)}
 .dk{color:var(--ink)}
-.h00,.f10{--dim:#8FA0D8}
-.h10,.f20{--dim:#A8B8F0}
-.h20,.f30{--dim:#B6C4FF}
-.h30,.f40{--dim:#C6CEFF}
-.h40,.f50{--dim:#EBCBFF}
-.h50{--dim:#FFD2E9}
-.f60{--dim:#3A0F27}
-.h60{--dim:#2E0A1F}
-.h70,.f70{--dim:#6E2A50}
-.h80,.f80{--dim:#7A3358}
-.h90,.f90{--dim:#6E2A50}
+.h00{--dim:#8FA0D8}
+.h10{--dim:#8FA0D8}
+.h20{--dim:#A8B8F0}
+.h30{--dim:#A8B8F0}
+.h40{--dim:#B6C4FF}
+.h50{--dim:#B6C4FF}
+.h60{--dim:#D9C4FF}
+.h70{--dim:#D9C4FF}
+.h80{--dim:#F2CCE8}
+.h90{--dim:#F2CCE8}
+.h100{--dim:#2E0A1F}
+.h110{--dim:#6E2A50}
+.h120{--dim:#6E2A50}
+.f10{--dim:#8FA0D8}
+.f20{--dim:#A8B8F0}
+.f30{--dim:#A8B8F0}
+.f40{--dim:#B6C4FF}
+.f50{--dim:#B6C4FF}
+.f60{--dim:#D9C4FF}
+.f70{--dim:#D9C4FF}
+.f80{--dim:#F2CCE8}
+.f90{--dim:#F2CCE8}
+.f100{--dim:#2E0A1F}
+.f110{--dim:#6E2A50}
+.f120{--dim:#6E2A50}
 
 /* ============================================================
    CUE RAIL — the cue stack, addressable
@@ -204,21 +247,32 @@ main{display:block}
   :root{--rail:0rem}
   .rail{display:none}
   .open,.hold{padding-right:var(--gut)}
+  /* the cue stack survives on mobile as a real strip of addresses,
+     not a decorative progress bar */
   .scrub{
-    display:flex; position:fixed; left:0; right:0; bottom:0; z-index:70;
-    align-items:center; gap:.65rem; padding:.55rem .9rem;
-    background:rgba(5,5,6,.82);
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
-    border-top:1px solid rgba(255,255,255,.14);
-    font-family:var(--mono); font-size:.62rem; letter-spacing:.18em;
-    color:#fff; text-transform:uppercase;
+    display:block; position:fixed; left:0; right:0; bottom:0; z-index:70;
+    background:rgba(5,5,6,.86);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border-top:1px solid rgba(255,255,255,.16);
+    color:#fff;
   }
-  .scrub .bar{flex:1;height:2px;background:rgba(255,255,255,.22);position:relative}
+  .scrub .bar{display:block;height:2px;background:rgba(255,255,255,.22);position:relative}
   .scrub .bar i{
     position:absolute;inset:0;background:#fff;
     transform:scaleX(0);transform-origin:left center;transition:transform .25s linear;
   }
-  body{padding-bottom:2.6rem}
+  .scrub .cues{
+    display:flex; gap:.15rem; overflow-x:auto; padding:.3rem .7rem calc(.3rem + env(safe-area-inset-bottom));
+    scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  }
+  .scrub .cues::-webkit-scrollbar{display:none}
+  .scrub .cues a{
+    flex:none; text-decoration:none; padding:.45rem .6rem;
+    font-family:var(--mono); font-size:.66rem; font-weight:500;
+    letter-spacing:.14em; opacity:.5; font-variant-numeric:tabular-nums;
+  }
+  .scrub .cues a[aria-current="true"]{opacity:1;box-shadow:inset 0 -2px 0 #fff}
+  body{padding-bottom:3.1rem}
 }
 
 /* ============================================================
@@ -266,7 +320,9 @@ main{display:block}
 .lit a.jack:hover,.lit a.jack:focus-visible{background:rgba(255,255,255,.18);transform:translateY(-2px)}
 .dk a.jack:hover,.dk a.jack:focus-visible{background:rgba(0,0,0,.12);transform:translateY(-2px)}
 
-.jack--dark{opacity:.6;border-style:dashed;cursor:default}
+/* an unpatched channel reads as dead through the dashed jack and the cap icon,
+   never by dimming its label below AA */
+.jack--dark{opacity:.85;border-style:dashed;cursor:default}
 
 /* ============================================================
    CHANNEL LEVELS — real proportions, printed
@@ -277,6 +333,7 @@ main{display:block}
 .chan-head .nm{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase}
 .chan-head .dl{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--dim)}
 .row{display:grid;grid-template-columns:4.2rem 1fr 3.6rem;gap:.75rem;align-items:center}
+.row:has(.k.wide){grid-template-columns:8.6rem 1fr 3.6rem}
 .row .k{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
 .row .v{font-family:var(--mono);font-size:.78rem;font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
 .track{height:.5rem;position:relative;background:none}
@@ -309,7 +366,8 @@ main{display:block}
 .sched td.num,.sched th.num{text-align:right}
 .sched tbody tr:last-child td{border-bottom:none}
 .sched tr.best td{font-weight:700}
-.sched tr.best td:first-child::before{content:"▶ ";font-size:.7em;vertical-align:.1em}
+/* the winning row is carried by ink weight, not a glyph standing in for an icon */
+.sched tr.best td{font-weight:700}
 .sched a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .sched a:hover{text-decoration-thickness:2px}
 .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -360,14 +418,12 @@ main{display:block}
 .rig text{font-family:var(--mono);fill:currentColor}
 
 /* ---- confusion grid (cue 40) ---- */
-.cm{display:grid;grid-template-columns:auto repeat(2,minmax(0,1fr));gap:1px;margin-top:1.7rem;max-width:30rem;background:currentColor}
-.cm > *{background:var(--cmbg);padding:.9rem .8rem;font-family:var(--mono)}
-.h40{--cmbg:#6A1FA8}
-.cm .hd{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);display:flex;align-items:flex-end}
-.cm .cell{display:flex;flex-direction:column;gap:.15rem}
-.cm .cell b{font-size:1.5rem;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
-.cm .cell span{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-.cm .cell.hit b{color:var(--lit)}
+/* confusion matrix reads as a real table so a screen reader gets the axes */
+.cm-table th[scope="row"]{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);font-weight:500;
+}
+.cm-table td.big{font-size:1.35rem;font-weight:500;line-height:1.1}
 
 /* ---- house lights (cue 90) ---- */
 .house{min-height:88svh;display:flex;flex-direction:column;justify-content:center}
@@ -406,6 +462,13 @@ main{display:block}
     transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),filter .9s cubic-bezier(.16,1,.3,1);
   }
   .js .rise.is-lit{opacity:1;transform:none;filter:none}
+  /* a cue title does not slide in, it comes up on the dimmer: the lamp
+     reaches its level while the body content travels */
+  .js .cue-name.rise,.js h1.rise{
+    transform:none; filter:blur(14px); opacity:0;
+    transition:opacity 1.15s cubic-bezier(.16,1,.3,1),filter 1.15s cubic-bezier(.16,1,.3,1);
+  }
+  .js .cue-name.rise.is-lit,.js h1.rise.is-lit{filter:none;opacity:1}
   .js .rise.d1{transition-delay:.09s}
   .js .rise.d2{transition-delay:.18s}
 }
@@ -430,8 +493,8 @@ a:focus-visible,[tabindex]:focus-visible{
   portfolio and its cream-and-serif editorial opposite.
   OWN-WORLD: Night #050506 through cobalt #0A2BFF, rose-gather #D24BFF, rose #FF7BAE, dawn wash
   #FFD7E6 to day #FFFFFF. Stencil display caps, Saira body, mono for levels and addresses.
-  Light holds during a cue and fades between them; ink flips from white to plum at daybreak.
-  STORY: A recruiter descends one continuous light field, reads real metrics as channel levels,
+  Light holds during a cue and fades between them; ink flips from white to plum at daybreak (cue 100).
+  STORY: A recruiter descends thirteen cues of one continuous light field, reads real metrics as channel levels,
   sees private work honestly marked NOT PATCHED, and arrives at house lights with contact.
   FIRST VIEWPORT: Blackout. A plot title block — name in stencil at 6rem, role, venue, cue count,
   patch addresses — set against depthless black, horizon line unlit.
@@ -453,12 +516,29 @@ a:focus-visible,[tabindex]:focus-visible{
   <a href="#cue-70"><span class="tick"></span><span class="n">70</span></a>
   <a href="#cue-80"><span class="tick"></span><span class="n">80</span></a>
   <a href="#cue-90"><span class="tick"></span><span class="n">90</span></a>
+  <a href="#cue-100"><span class="tick"></span><span class="n">100</span></a>
+  <a href="#cue-110"><span class="tick"></span><span class="n">110</span></a>
+  <a href="#cue-120"><span class="tick"></span><span class="n">120</span></a>
 </nav>
 
-<div class="scrub" aria-hidden="true">
-  <span id="scrubLabel">00 · Blackout</span>
-  <span class="bar"><i id="scrubFill"></i></span>
-</div>
+<nav class="scrub" aria-label="Cue stack">
+  <span class="bar" aria-hidden="true"><i id="scrubFill"></i></span>
+  <div class="cues">
+    <a href="#cue-00">00 Blackout</a>
+    <a href="#cue-10">10 AetherChat</a>
+    <a href="#cue-20">20 Qwen / IBES</a>
+    <a href="#cue-30">30 VC Scout</a>
+    <a href="#cue-40">40 Agent eval</a>
+    <a href="#cue-50">50 Agent memory</a>
+    <a href="#cue-60">60 Acquisition</a>
+    <a href="#cue-70">70 Topic models</a>
+    <a href="#cue-80">80 Retail ops</a>
+    <a href="#cue-90">90 Supply chain</a>
+    <a href="#cue-100">100 Working plot</a>
+    <a href="#cue-110">110 Supporting</a>
+    <a href="#cue-120">120 House lights</a>
+  </div>
+</nav>
 
 <main id="main">
 
@@ -467,26 +547,26 @@ a:focus-visible,[tabindex]:focus-visible{
   <div class="plot h00 lit">
     <div class="wrap">
       <h1 id="h-00" class="rise">Nathanael<br>Gill</h1>
-      <p class="lede rise d1">I build machine learning systems that ship and get measured — an on-device LLM app on two platforms, a 27-billion-parameter fine-tune with published holdout metrics, and evaluation harnesses that say when a model is not actually better.</p>
+      <p class="lede rise d1">I build machine learning systems that ship and get measured &mdash; an on-device LLM app on two platforms, a 27-billion-parameter fine-tune with published holdout metrics, and evaluation harnesses that say when a model is not actually better.</p>
 
       <dl class="titleblock rise d2">
         <div><dt>Plot</dt><dd>Selected work, 2025&ndash;2026</dd></div>
         <div><dt>Discipline</dt><dd>ML &amp; analytics engineering</dd></div>
         <div><dt>Reading</dt><dd>MS Business Analytics, Cornell &middot; May 2026</dd></div>
         <div><dt>Venue</dt><dd>Nashville, TN &middot; Ithaca, NY</dd></div>
-        <div><dt>Cues</dt><dd>Nine, blackout to day</dd></div>
+        <div><dt>Cues</dt><dd>Thirteen, blackout to day</dd></div>
       </dl>
 
       <div class="patch rise d2">
-        <a class="jack" href="mailto:ng542@cornell.edu" data-label="ng542@cornell.edu">
+        <a class="jack" href="mailto:ng542@cornell.edu">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.75" y="5.25" width="18.5" height="13.5"/><path d="M2.75 6.5 12 13.25 21.25 6.5"/></svg>
           <span>ng542@cornell.edu</span>
         </a>
-        <a class="jack" href="https://github.com/nathanaelguitar" data-label="github.com/nathanaelguitar">
+        <a class="jack" href="https://github.com/nathanaelguitar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="7.5" r="3.25"/><path d="M12 10.75v3.5M12 14.25 6.5 17.5v3M12 14.25l5.5 3.25v3"/><circle cx="6.5" cy="21" r="1.4"/><circle cx="17.5" cy="21" r="1.4"/></svg>
           <span>github.com/nathanaelguitar</span>
         </a>
-        <a class="jack" href="https://www.linkedin.com/in/nathanaelgill" data-label="linkedin.com/in/nathanaelgill">
+        <a class="jack" href="https://www.linkedin.com/in/nathanaelgill">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.75" y="2.75" width="18.5" height="18.5"/><path d="M7 10.5v6.25M7 7.4v.1M11.25 16.75V10.5M11.25 13.1c0-1.4 1.05-2.6 2.5-2.6s2.5 1.2 2.5 2.6v3.65"/></svg>
           <span>linkedin.com/in/nathanaelgill</span>
         </a>
@@ -495,63 +575,58 @@ a:focus-visible,[tabindex]:focus-visible{
   </div>
 </section>
 
-<!-- ══════════════ CUE 10 · CANOPYCHAT ══════════════ -->
+<!-- ══════════════ CUE 10 · AETHERCHAT ══════════════ -->
 <section id="cue-10" class="cue" aria-labelledby="h-10">
-  <div class="open f10 lit">
+  <div class="open open--full f10 lit">
     <div class="wrap">
-      <p class="addr rise">Cue 10 &middot; Night</p>
-      <h2 id="h-10" class="cue-name rise d1">CanopyChat</h2>
+      <a class="addr rise" href="#cue-10">Cue 10</a>
+      <h2 id="h-10" class="cue-name rise d1">AetherChat</h2>
     </div>
   </div>
   <div class="hold h10 lit">
     <div class="wrap">
       <div class="split split--60">
         <div>
-          <p class="lede rise">A private, local-first AI chat app that runs the model on your phone. Two full native codebases — SwiftUI on iOS, Kotlin and Jetpack Compose on Android — over a shared inference layer, with an optional Ktor proxy when you want a server.</p>
-          <p class="rise">Quantized GGUF weights run on-device, so conversations never leave the handset. On top of that sit web-search retrieval for questions the local model can't answer from memory, subscription handling, and contributor telemetry for improving the model.</p>
+          <p class="lede rise">A private, local-first AI chat app that runs the model on your phone. Two full native codebases &mdash; SwiftUI on iOS, Kotlin and Jetpack Compose on Android &mdash; over a shared inference layer, with an optional Ktor proxy when you want a server.</p>
+          <p class="rise">Quantized GGUF weights run on-device through llama.cpp, so conversations never leave the handset. Above that sit a SQLite memory store with full-text recall, a ChatML prompt builder, web-search intent detection and ranking for questions the local model cannot answer from memory, title generation, and loop detection.</p>
+          <p class="rise">The Android port is not a wrapper. The domain layer is ported from the Swift source file for file, down to a JNI wrapper that builds llama.cpp for arm64 and loads both a language model and a vision projector.</p>
 
           <div class="chips rise d1">
             <span class="chip">Swift / SwiftUI</span>
             <span class="chip">Kotlin / Compose</span>
-            <span class="chip">Ktor</span>
+            <span class="chip">llama.cpp JNI</span>
             <span class="chip">GGUF quantization</span>
-            <span class="chip">Web-search RAG</span>
+            <span class="chip">Ktor</span>
             <span class="chip">124 commits</span>
           </div>
 
           <div class="patch rise d1">
-            <a class="jack" href="https://github.com/nathanaelguitar/local_ai_aether" data-label="local_ai_aether">
+            <a class="jack" href="https://github.com/nathanaelguitar/local_ai_aether">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
               <span>local_ai_aether</span>
             </a>
-            <a class="jack" href="https://nathanaelguitar.github.io/canopy_publicsite/" data-label="Live site">
+            <a class="jack" href="https://nathanaelguitar.github.io/canopy_publicsite/">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9.25"/><path d="M2.75 12h18.5M12 2.75c2.4 2.5 3.6 5.6 3.6 9.25S14.4 18.75 12 21.25c-2.4-2.5-3.6-5.6-3.6-9.25S9.6 5.25 12 2.75Z"/></svg>
               <span>Live site</span>
             </a>
           </div>
 
-          <p class="note rise d2">Shipped as source, not on an app store. No release, download, or user numbers are claimed.</p>
+          <p class="note rise d2">The iOS target builds as <strong>AetherChat</strong>; the product ships under the <strong>CanopyChat</strong> identity, which is what the privacy, terms, and support site above serves. Shipped as source &mdash; there is no app-store release, and no download or user numbers are claimed.</p>
         </div>
 
         <div class="rise d1">
-          <p class="label" id="rig-cap">Rig plot</p>
+          <h3 class="label" id="rig-cap">Rig plot</h3>
           <svg class="rig" viewBox="0 0 340 300" role="img" aria-labelledby="rig-cap rig-desc">
-            <desc id="rig-desc">Three modules: an iOS SwiftUI client and an Android Compose client, each running on-device GGUF inference, both able to patch optionally to a Kotlin Ktor proxy.</desc>
+            <desc id="rig-desc">An iOS SwiftUI client and an Android Compose client, each running on-device GGUF inference through llama.cpp, both able to patch optionally to a Kotlin Ktor proxy, with web-search retrieval feeding the shared inference layer.</desc>
             <g fill="none" stroke="currentColor" stroke-width="1.4">
-              <!-- iOS fixture -->
               <rect x="14" y="18" width="120" height="46"/>
               <circle cx="30" cy="41" r="9"/>
-              <!-- Android fixture -->
               <rect x="206" y="18" width="120" height="46"/>
               <circle cx="222" cy="41" r="9"/>
-              <!-- feeds down -->
               <path d="M74 64v44M266 64v44"/>
-              <!-- shared inference bar -->
               <rect x="14" y="108" width="312" height="52"/>
-              <!-- rag feed in -->
               <path d="M170 160v34" stroke-dasharray="1 5" stroke-linecap="round"/>
               <rect x="86" y="194" width="168" height="40"/>
-              <!-- optional proxy -->
               <path d="M170 234v30" stroke-dasharray="4 5"/>
               <rect x="60" y="264" width="220" height="30" stroke-dasharray="4 5"/>
             </g>
@@ -561,11 +636,11 @@ a:focus-visible,[tabindex]:focus-visible{
               <text x="48" y="52" opacity=".72" font-size="8">SWIFTUI</text>
               <text x="222" y="44" text-anchor="middle" font-size="8.5" font-weight="700">11</text>
               <text x="240" y="38">ANDROID/</text>
-              <text x="240" y="52" opacity=".72" font-size="8">KOTLIN &#183; COMPOSE</text>
+              <text x="240" y="52" opacity=".72" font-size="7.4">KOTLIN/COMPOSE</text>
               <text x="28" y="132">ON-DEVICE INFERENCE</text>
-              <text x="28" y="147" opacity=".72" font-size="8">QUANTIZED GGUF WEIGHTS</text>
+              <text x="28" y="147" opacity=".72" font-size="8">LLAMA.CPP &#183; QUANTIZED GGUF</text>
               <text x="102" y="212">WEB-SEARCH RAG</text>
-              <text x="102" y="226" opacity=".72" font-size="8">RETRIEVAL TOOLS</text>
+              <text x="102" y="226" opacity=".72" font-size="8">INTENT DETECTION &#183; RANKING</text>
               <text x="76" y="283" opacity=".72" font-size="8">BACKEND/ KTOR PROXY &#183; OPTIONAL</text>
             </g>
           </svg>
@@ -577,9 +652,9 @@ a:focus-visible,[tabindex]:focus-visible{
 
 <!-- ══════════════ CUE 20 · IBES ADAPTER ══════════════ -->
 <section id="cue-20" class="cue" aria-labelledby="h-20">
-  <div class="open f20 lit">
+  <div class="open open--full f20 lit">
     <div class="wrap">
-      <p class="addr rise">Cue 20 &middot; Cobalt horizon</p>
+      <a class="addr rise" href="#cue-20">Cue 20</a>
       <h2 id="h-20" class="cue-name rise d1">Qwen3.6&#8209;27B<br>on IBES</h2>
     </div>
   </div>
@@ -588,7 +663,7 @@ a:focus-visible,[tabindex]:focus-visible{
       <div class="split split--60">
         <div>
           <p class="lede rise">A QLoRA fine-tune of a 27-billion-parameter model on financial analyst estimate-revision events from WRDS/IBES, trained in 4-bit on a dedicated NVIDIA DGX Spark.</p>
-          <p class="rise">The work behind the adapter is the data engineering: a PySpark bronze&#8211;silver&#8211;gold pipeline that turns raw IBES revision records into an event-level training set, plus an evaluation script that runs base and adapter over the same holdout and diffs them.</p>
+          <p class="rise">The work behind the adapter is the data engineering: a PySpark bronze&ndash;silver&ndash;gold pipeline that turns raw IBES revision records into an event-level training set, plus an evaluation script that runs base and adapter over the same holdout and diffs them.</p>
 
           <div class="chips rise d1">
             <span class="chip">QLoRA &middot; 4-bit</span>
@@ -599,7 +674,7 @@ a:focus-visible,[tabindex]:focus-visible{
           </div>
 
           <div class="patch rise d1">
-            <a class="jack" href="https://github.com/nathanaelguitar/ML_Class_LORA" data-label="ML_Class_LORA">
+            <a class="jack" href="https://github.com/nathanaelguitar/ML_Class_LORA">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
               <span>ML_Class_LORA</span>
             </a>
@@ -609,7 +684,7 @@ a:focus-visible,[tabindex]:focus-visible{
         </div>
 
         <div class="rise d1">
-          <p class="label">Channel levels &middot; 10k WRDS holdout</p>
+          <h3 class="label">Channel levels &middot; 10k WRDS holdout</h3>
           <div class="levels">
             <div class="chan">
               <div class="chan-head"><span class="nm">Accuracy</span><span class="dl">+0.551</span></div>
@@ -644,7 +719,7 @@ a:focus-visible,[tabindex]:focus-visible{
 <section id="cue-30" class="cue" aria-labelledby="h-30">
   <div class="open f30 lit">
     <div class="wrap">
-      <p class="addr rise">Cue 30 &middot; Cobalt</p>
+      <a class="addr rise" href="#cue-30">Cue 30</a>
       <h2 id="h-30" class="cue-name rise d1">VC Scout</h2>
     </div>
   </div>
@@ -652,7 +727,7 @@ a:focus-visible,[tabindex]:focus-visible{
     <div class="wrap">
       <div class="split split--60">
         <div>
-          <p class="lede rise">A valuation-scale model for unicorn companies, built as a Cornell capstone. Predicts ln(valuation in $B) from publicly listed fields across 1,060 modeled companies, with the framing chosen specifically to avoid a bias the dataset invites.</p>
+          <p class="lede rise">My Cornell capstone: a valuation-scale model for unicorn companies. It predicts ln(valuation in $B) from publicly listed fields across 1,060 modeled companies, with the framing chosen specifically to avoid a bias the dataset invites.</p>
           <p class="rise">Every row in the data already reached unicorn status, so this can never be a startup-success predictor. It is framed strictly as conditional-on-unicorn valuation scale. Funding efficiency was deliberately excluded as a feature because it contains the target.</p>
 
           <div class="chips rise d1">
@@ -663,7 +738,7 @@ a:focus-visible,[tabindex]:focus-visible{
           </div>
 
           <div class="patch rise d1">
-            <a class="jack" href="https://github.com/nathanaelguitar/team17-vc-scout-model" data-label="team17-vc-scout-model">
+            <a class="jack" href="https://github.com/nathanaelguitar/team17-vc-scout-model">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
               <span>team17-vc-scout-model</span>
             </a>
@@ -701,7 +776,7 @@ a:focus-visible,[tabindex]:focus-visible{
 <section id="cue-40" class="cue" aria-labelledby="h-40">
   <div class="open f40 lit">
     <div class="wrap">
-      <p class="addr rise">Cue 40 &middot; Rose gather</p>
+      <a class="addr rise" href="#cue-40">Cue 40</a>
       <h2 id="h-40" class="cue-name rise d1">Agent<br>Evaluation</h2>
     </div>
   </div>
@@ -720,7 +795,7 @@ a:focus-visible,[tabindex]:focus-visible{
           </div>
 
           <div class="patch rise d1">
-            <a class="jack" href="https://github.com/nathanaelguitar/AgenticSales" data-label="AgenticSales">
+            <a class="jack" href="https://github.com/nathanaelguitar/AgenticSales">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
               <span>AgenticSales</span>
             </a>
@@ -728,24 +803,21 @@ a:focus-visible,[tabindex]:focus-visible{
         </div>
 
         <div class="rise d1">
-          <p class="label">Buyer-qualification baseline &middot; confusion matrix</p>
-          <div class="cm">
-            <span class="hd"></span>
-            <span class="hd">Pred. no</span>
-            <span class="hd">Pred. yes</span>
-
-            <span class="hd">Actual no</span>
-            <span class="cell hit"><b>19</b><span>True neg.</span></span>
-            <span class="cell"><b>0</b><span>False pos.</span></span>
-
-            <span class="hd">Actual yes</span>
-            <span class="cell"><b>1</b><span>False neg.</span></span>
-            <span class="cell hit"><b>4</b><span>True pos.</span></span>
+          <h3 class="label">Buyer-qualification baseline &middot; confusion matrix</h3>
+          <div class="tbl-scroll">
+            <table class="sched cm-table">
+              <caption>Logistic regression &middot; 120 synthetic calls, 96 train / 24 test</caption>
+              <thead>
+                <tr><th scope="col"><span class="vh">Outcome</span></th><th scope="col" class="num">Predicted no</th><th scope="col" class="num">Predicted yes</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Actual no</th><td class="num big">19</td><td class="num">0</td></tr>
+                <tr><th scope="row">Actual yes</th><td class="num">1</td><td class="num big">4</td></tr>
+              </tbody>
+            </table>
           </div>
-
           <div class="tbl-scroll">
             <table class="sched">
-              <caption>Logistic regression &middot; 120 synthetic calls, 96 train / 24 test</caption>
               <tbody>
                 <tr><td>Accuracy</td><td class="num">0.958</td></tr>
                 <tr><td>Precision</td><td class="num">1.000</td></tr>
@@ -763,138 +835,303 @@ a:focus-visible,[tabindex]:focus-visible{
   </div>
 </section>
 
-<!-- ══════════════ CUE 50 · DARK CHANNELS ══════════════ -->
+<!-- ══════════════ CUE 50 · RECURSIVE AGENT MEMORY ══════════════ -->
 <section id="cue-50" class="cue" aria-labelledby="h-50">
   <div class="open f50 lit">
     <div class="wrap">
-      <p class="addr rise">Cue 50 &middot; Rose</p>
-      <h2 id="h-50" class="cue-name rise d1">Dark<br>Channels</h2>
+      <a class="addr rise" href="#cue-50">Cue 50</a>
+      <h2 id="h-50" class="cue-name rise d1">Recursive<br>Agent Memory</h2>
     </div>
   </div>
   <div class="hold h50 lit">
     <div class="wrap">
-      <p class="lede rise" style="max-width:56ch">Work that exists but is not patched to a public address. These repositories are private, so there is nothing to click — the description is all I can honestly give you.</p>
+      <div class="split split--60">
+        <div>
+          <p class="lede rise">Agents forget everything between sessions. I extended the open-source OpenClaw agent codebase with memory that survives the run: SQLite for structured storage, embedding-based semantic search for retrieval, and time-aware context assembly.</p>
+          <p class="rise">The two halves matter separately. Structured storage answers <em>what happened and when</em>, which a vector index is bad at; embedding search answers <em>what was this about</em>, which a SQL predicate is bad at. Assembling both into a time-aware window is what lets an agent pull its own prior logs into a later run instead of starting cold.</p>
 
-      <div class="split split--half" style="margin-top:2.5rem">
-        <div class="stack rise d1">
-          <div class="entry">
-            <div class="entry-head"><h3>Recursive agent memory</h3><span class="when">Private</span></div>
-            <p class="role">OpenClaw extension</p>
-            <p>Extended the open-source OpenClaw agent codebase with persistent recursive memory: SQLite for structured storage, embedding-based semantic search for retrieval, and time-aware context assembly so an agent can pull its own prior logs into a later session.</p>
-            <div class="patch">
-              <span class="jack jack--dark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.75" y="10.75" width="14.5" height="9.5"/><path d="M8.25 10.75V7.5a3.75 3.75 0 0 1 7.5 0v3.25"/></svg>
-                <span>Not patched</span>
-              </span>
-            </div>
-            <p class="note">Built on someone else's codebase. The upstream project's commit history is not mine and is not counted here.</p>
+          <div class="chips rise d1">
+            <span class="chip">SQLite</span>
+            <span class="chip">Embedding search</span>
+            <span class="chip">Time-aware retrieval</span>
+            <span class="chip">Agent runtime</span>
           </div>
 
-          <div class="entry">
-            <div class="entry-head"><h3>Smart-glasses capture</h3><span class="when">Private</span></div>
-            <p class="role">Exploratory</p>
-            <p>Meta Ray-Ban glasses wired to Gemini Live and an OpenClaw agent backend, exploring hands-free ambient capture as an agent input. Exploratory; no shipped claim attached.</p>
-            <div class="patch">
-              <span class="jack jack--dark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.75" y="10.75" width="14.5" height="9.5"/><path d="M8.25 10.75V7.5a3.75 3.75 0 0 1 7.5 0v3.25"/></svg>
-                <span>Not patched</span>
-              </span>
-            </div>
+          <div class="patch rise d1">
+            <span class="jack jack--dark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.75" y="10.75" width="14.5" height="9.5"/><path d="M8.25 10.75V7.5a3.75 3.75 0 0 1 7.5 0v3.25"/></svg>
+              <span>Not patched &middot; private</span>
+            </span>
           </div>
+
+          <p class="note rise d2">Built on top of someone else's open-source codebase. The upstream project's commit history is not mine and is not counted anywhere on this page. The repository is private, so there is nothing to click.</p>
         </div>
 
-        <div class="stack rise d2">
-          <div class="entry">
-            <div class="entry-head"><h3>Acquisition sourcing pipeline</h3><span class="when">Private</span></div>
-            <p class="role">Agentic automation</p>
-            <p>An orchestrated pipeline for sourcing potential acquisition targets: web scraping into lead enrichment, then automated email outreach and call qualification. Migrated off a local Docker environment onto a Linux VM on Oracle Cloud Infrastructure so it runs without a laptop open.</p>
-            <div class="patch">
-              <span class="jack jack--dark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.75" y="10.75" width="14.5" height="9.5"/><path d="M8.25 10.75V7.5a3.75 3.75 0 0 1 7.5 0v3.25"/></svg>
-                <span>Not patched</span>
-              </span>
-            </div>
-            <p class="note">Client material is under NDA. No client is named and no results are quoted.</p>
-          </div>
-
-          <div class="entry">
-            <div class="entry-head"><h3>iOS agent client</h3><span class="when">Private</span></div>
-            <p class="role">Swift</p>
-            <p>A native Swift client for driving an agent runtime from a phone, sharing a lineage with the CanopyChat iOS work.</p>
-            <div class="patch">
-              <span class="jack jack--dark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.75" y="10.75" width="14.5" height="9.5"/><path d="M8.25 10.75V7.5a3.75 3.75 0 0 1 7.5 0v3.25"/></svg>
-                <span>Not patched</span>
-              </span>
-            </div>
-          </div>
+        <div class="rise d1">
+          <h3 class="label" id="mem-cap">Signal flow</h3>
+          <svg class="rig" viewBox="0 0 340 300" role="img" aria-labelledby="mem-cap mem-desc">
+            <desc id="mem-desc">An agent run writes to a SQLite store; retrieval splits into a structured query and an embedding search, which merge into a time-aware context that feeds the next run.</desc>
+            <g fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="96" y="14" width="148" height="38"/>
+              <circle cx="112" cy="33" r="8"/>
+              <path d="M170 52v26"/>
+              <rect x="60" y="78" width="220" height="44"/>
+              <path d="M110 122v26M230 122v26"/>
+              <rect x="24" y="148" width="150" height="40"/>
+              <rect x="190" y="148" width="126" height="40" stroke-dasharray="3 4"/>
+              <path d="M110 188v22h120v-22"/>
+              <path d="M170 210v22"/>
+              <rect x="70" y="232" width="200" height="40"/>
+              <path d="M70 252H30V33h58" stroke-dasharray="4 5"/>
+            </g>
+            <g font-size="9" letter-spacing="1.6" fill="currentColor">
+              <text x="112" y="36" text-anchor="middle" font-size="8.5" font-weight="700">50</text>
+              <text x="128" y="37">AGENT RUN</text>
+              <text x="74" y="100">SQLITE STORE</text>
+              <text x="74" y="114" opacity=".72" font-size="8">LOGS &#183; TIMESTAMPS &#183; STATE</text>
+              <text x="38" y="166">STRUCTURED QUERY</text>
+              <text x="38" y="179" opacity=".72" font-size="8">WHAT HAPPENED, WHEN</text>
+              <text x="200" y="166" font-size="8">EMBEDDINGS</text>
+              <text x="200" y="179" opacity=".72" font-size="8">SEMANTIC RECALL</text>
+              <text x="84" y="254">TIME-AWARE CONTEXT</text>
+              <text x="84" y="267" opacity=".72" font-size="8">ASSEMBLED FOR THE NEXT RUN</text>
+            </g>
+          </svg>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ CUE 60 · DAYBREAK — ink flips ══════════════ -->
+<!-- ══════════════ CUE 60 · ACQUISITION SOURCING ══════════════ -->
 <section id="cue-60" class="cue" aria-labelledby="h-60">
-  <div class="open f60 dk">
+  <div class="open f60 lit">
     <div class="wrap">
-      <p class="addr rise">Cue 60 &middot; First light</p>
-      <h2 id="h-60" class="cue-name rise d1">Supporting<br>Plot</h2>
+      <a class="addr rise" href="#cue-60">Cue 60</a>
+      <h2 id="h-60" class="cue-name rise d1">Acquisition<br>Sourcing</h2>
     </div>
   </div>
-  <div class="hold h60 dk">
+  <div class="hold h60 lit">
     <div class="wrap">
-      <p class="lede rise" style="max-width:56ch">Smaller public repositories. Each one does a specific thing and is finished enough to read.</p>
+      <div class="split split--60">
+        <div>
+          <p class="lede rise">An agentic pipeline that sources potential acquisition targets end to end: web scraping into lead enrichment, then automated email outreach and call qualification, with a human reading the results rather than a dashboard.</p>
+          <p class="rise">The interesting part was making it survive. It started as a local Docker environment that only ran while a laptop was open; I migrated it onto a Linux VM on Oracle Cloud Infrastructure so the scrape, enrichment, and outreach stages run on a schedule and hold state between them.</p>
 
-      <div class="tbl-scroll rise d1">
-        <table class="sched" style="margin-top:2.2rem">
-          <caption>Channel schedule</caption>
-          <thead>
-            <tr><th scope="col">Repository</th><th scope="col">What it does</th><th scope="col" class="num">Commits</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><a href="https://github.com/nathanaelguitar/NLPs">NLPs</a></td>
-              <td>24-topic LDA over the middle 1,000 US companies by market cap, cross-tabulated against GICS industry groups. Utilities came out 96.2% coherent, insurance 95.0%, banks 91.8%, semiconductors 81.2%, autos 71.4%.</td>
-              <td class="num">16</td>
-            </tr>
-            <tr>
-              <td><a href="https://github.com/nathanaelguitar/digital_operations">digital_operations</a></td>
-              <td>Forecast-accuracy pipeline over Walmart sales data computing MAD, MAPE, sales-to-forecast ratio, and bias, then exporting a multi-sheet Excel report built on live SUMPRODUCT formulas rather than pasted values.</td>
-              <td class="num">12</td>
-            </tr>
-            <tr>
-              <td><a href="https://github.com/nathanaelguitar/localai_app">localai_app</a></td>
-              <td>Kotlin Multiplatform and Compose Multiplatform scaffold for the Canopy product identity &mdash; onboarding, workspaces, personas, saved workflows. A scaffold: chat responses are stubbed behind a swappable repository interface.</td>
-              <td class="num">6</td>
-            </tr>
-            <tr>
-              <td><a href="https://github.com/nathanaelguitar/canopy_publicsite">canopy_publicsite</a></td>
-              <td>The static site serving CanopyChat's privacy policy, terms, and support pages for app-store compliance. Live on GitHub Pages.</td>
-              <td class="num">&mdash;</td>
-            </tr>
-          </tbody>
-        </table>
+          <div class="chips rise d1">
+            <span class="chip">Web scraping</span>
+            <span class="chip">Lead enrichment</span>
+            <span class="chip">Email automation</span>
+            <span class="chip">Docker &rarr; Oracle Cloud</span>
+          </div>
+
+          <div class="patch rise d1">
+            <span class="jack jack--dark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.75" y="10.75" width="14.5" height="9.5"/><path d="M8.25 10.75V7.5a3.75 3.75 0 0 1 7.5 0v3.25"/></svg>
+              <span>Not patched &middot; private</span>
+            </span>
+          </div>
+
+          <p class="note rise d2">Client material is under NDA. No client is named, no results are quoted, and the repository stays private.</p>
+        </div>
+
+        <div class="rise d1">
+          <h3 class="label" id="pipe-cap">Stage plot</h3>
+          <svg class="rig" viewBox="0 0 340 300" role="img" aria-labelledby="pipe-cap pipe-desc">
+            <desc id="pipe-desc">Four chained stages — scrape, enrich, outreach, qualify — all housed inside a persistent Linux VM on Oracle Cloud Infrastructure.</desc>
+            <g fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="10" y="10" width="320" height="280" stroke-dasharray="4 5"/>
+              <rect x="44" y="46" width="252" height="40"/>
+              <circle cx="62" cy="66" r="8"/>
+              <path d="M170 86v20"/>
+              <rect x="44" y="106" width="252" height="40"/>
+              <circle cx="62" cy="126" r="8"/>
+              <path d="M170 146v20"/>
+              <rect x="44" y="166" width="252" height="40"/>
+              <circle cx="62" cy="186" r="8"/>
+              <path d="M170 206v20"/>
+              <rect x="44" y="226" width="252" height="40"/>
+              <circle cx="62" cy="246" r="8"/>
+            </g>
+            <g font-size="9" letter-spacing="1.6" fill="currentColor">
+              <text x="20" y="30" opacity=".72" font-size="8">ORACLE CLOUD &#183; LINUX VM &#183; PERSISTENT</text>
+              <text x="62" y="69" text-anchor="middle" font-size="8.5" font-weight="700">61</text>
+              <text x="80" y="70">SCRAPE</text>
+              <text x="62" y="129" text-anchor="middle" font-size="8.5" font-weight="700">62</text>
+              <text x="80" y="130">ENRICH</text>
+              <text x="62" y="189" text-anchor="middle" font-size="8.5" font-weight="700">63</text>
+              <text x="80" y="190">OUTREACH</text>
+              <text x="62" y="249" text-anchor="middle" font-size="8.5" font-weight="700">64</text>
+              <text x="80" y="250">QUALIFY</text>
+            </g>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ CUE 70 · WORKING PLOT ══════════════ -->
+<!-- ══════════════ CUE 70 · TOPIC MODELLING ══════════════ -->
 <section id="cue-70" class="cue" aria-labelledby="h-70">
-  <div class="open f70 dk">
+  <div class="open f70 lit">
     <div class="wrap">
-      <p class="addr rise">Cue 70 &middot; Dawn wash</p>
-      <h2 id="h-70" class="cue-name rise d1">Working<br>Plot</h2>
+      <a class="addr rise" href="#cue-70">Cue 70</a>
+      <h2 id="h-70" class="cue-name rise d1">Topic<br>Modelling</h2>
     </div>
   </div>
-  <div class="hold h70 dk">
+  <div class="hold h70 lit">
+    <div class="wrap">
+      <div class="split split--60">
+        <div>
+          <p class="lede rise">A 24-topic LDA model over the business descriptions of the middle 1,000 companies by market capitalisation, then tested against GICS to see how much of a standard industry taxonomy an unsupervised model recovers on its own.</p>
+          <p class="rise">Each company's cleaned description becomes a 24-element topic probability vector; each is hard-assigned to its dominant topic; topics are named from their top words rather than their arbitrary numbers; then the assignments are cross-tabulated against GICS groups in both directions. The result is a coherence score per industry &mdash; and the finding that most of the performance came from preprocessing, not from the algorithm.</p>
+
+          <div class="chips rise d1">
+            <span class="chip">LDA</span>
+            <span class="chip">pyLDAvis</span>
+            <span class="chip">GICS</span>
+            <span class="chip">16 commits</span>
+          </div>
+
+          <div class="patch rise d1">
+            <a class="jack" href="https://github.com/nathanaelguitar/NLPs">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
+              <span>NLPs</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="rise d1">
+          <h3 class="label">Topic coherence by GICS group</h3>
+          <div class="levels">
+            <div class="chan"><div class="row"><span class="k wide">Utilities</span><span class="track"><i class="fill fill--adapt" style="--v:0.962"></i></span><span class="v">96.2%</span></div></div>
+            <div class="chan"><div class="row"><span class="k wide">Insurance</span><span class="track"><i class="fill fill--adapt" style="--v:0.950"></i></span><span class="v">95.0%</span></div></div>
+            <div class="chan"><div class="row"><span class="k wide">Banks</span><span class="track"><i class="fill fill--adapt" style="--v:0.918"></i></span><span class="v">91.8%</span></div></div>
+            <div class="chan"><div class="row"><span class="k wide">Semiconductors</span><span class="track"><i class="fill fill--adapt" style="--v:0.812"></i></span><span class="v">81.2%</span></div></div>
+            <div class="chan"><div class="row"><span class="k wide">Autos</span><span class="track"><i class="fill fill--adapt" style="--v:0.714"></i></span><span class="v">71.4%</span></div></div>
+          </div>
+          <p class="note rise d2">Tightly regulated, vocabulary-bound industries separate cleanly; sectors whose companies describe themselves in general technology language do not. That gap is the actual result.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CUE 80 · RETAIL OPERATIONS ══════════════ -->
+<section id="cue-80" class="cue" aria-labelledby="h-80">
+  <div class="open open--full f80 lit">
+    <div class="wrap">
+      <a class="addr rise" href="#cue-80">Cue 80</a>
+      <h2 id="h-80" class="cue-name rise d1">Retail<br>Operations</h2>
+    </div>
+  </div>
+  <div class="hold h80 lit">
+    <div class="wrap">
+      <div class="split split--60">
+        <div>
+          <p class="lede rise">Five notebooks that end in a staffing plan rather than a chart. Data ingestion and quality checks, demand-pattern analysis, basket analysis and cross-sell, a forecasting and staffing model, then written operational recommendations.</p>
+          <p class="rise">Association-rule mining finds which products actually move together; hourly and weekday demand profiles feed a staffing model; and every output is written out as a CSV a store manager could act on, not just a figure in a notebook.</p>
+
+          <div class="chips rise d1">
+            <span class="chip">Jupyter</span>
+            <span class="chip">Market basket analysis</span>
+            <span class="chip">Association rules</span>
+            <span class="chip">Demand forecasting</span>
+            <span class="chip">Staffing model</span>
+          </div>
+
+          <div class="patch rise d1">
+            <a class="jack" href="https://github.com/nathanaelguitar/digital_retail_operations">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
+              <span>digital_retail_operations</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="rise d1">
+          <div class="tbl-scroll">
+            <table class="sched">
+              <caption>Notebooks and what each one produces</caption>
+              <thead><tr><th scope="col">Notebook</th><th scope="col">Output</th></tr></thead>
+              <tbody>
+                <tr><td>01 Ingestion &amp; quality</td><td>Validated transaction table</td></tr>
+                <tr><td>02 Demand &amp; EDA</td><td><span class="mono">demand_summary</span>, <span class="mono">hourly_profile</span></td></tr>
+                <tr><td>03 Basket &amp; cross-sell</td><td><span class="mono">association_rules</span>, <span class="mono">top_products</span></td></tr>
+                <tr><td>04 Forecast &amp; staffing</td><td><span class="mono">staffing_plan</span>, staffing heatmap</td></tr>
+                <tr><td>05 Recommendations</td><td><span class="mono">executive_summary</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CUE 90 · SUPPLY CHAIN ══════════════ -->
+<section id="cue-90" class="cue" aria-labelledby="h-90">
+  <div class="open f90 lit">
+    <div class="wrap">
+      <a class="addr rise" href="#cue-90">Cue 90</a>
+      <h2 id="h-90" class="cue-name rise d1">Supply<br>Chain</h2>
+    </div>
+  </div>
+  <div class="hold h90 lit">
+    <div class="wrap">
+      <div class="split split--60">
+        <div>
+          <p class="lede rise">Graduate optimization work: inventory levels tuned to maximise supply-chain efficiency, and production capacity allocated across competing products under constraint.</p>
+          <p class="rise">Two linked decision problems. The first asks how much to hold and when to reorder so that service level survives demand variability without financing dead stock. The second asks which products get scarce capacity when you cannot make everything, and what that choice costs in contribution margin. Python models alongside the Excel workbooks the decisions were presented in.</p>
+
+          <div class="chips rise d1">
+            <span class="chip">Inventory optimization</span>
+            <span class="chip">Capacity allocation</span>
+            <span class="chip">Python + Excel</span>
+            <span class="chip">20 commits</span>
+          </div>
+
+          <div class="patch rise d1">
+            <a class="jack" href="https://github.com/nathanaelguitar/Supply_Chain">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
+              <span>Supply_Chain</span>
+            </a>
+          </div>
+
+          <p class="note rise d2">Coursework for a graduate supply-chain analytics course, submitted work included.</p>
+        </div>
+
+        <div class="rise d1">
+          <div class="tbl-scroll">
+            <table class="sched">
+              <caption>Decision problems</caption>
+              <thead><tr><th scope="col">Problem</th><th scope="col">Decision</th></tr></thead>
+              <tbody>
+                <tr><td>Inventory optimization</td><td>Order quantity and reorder point that hold service level without over-financing stock</td></tr>
+                <tr><td>Production capacity allocation</td><td>Which products absorb constrained capacity, and the margin given up by the ones that do not</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CUE 100 · DAYBREAK — WORKING PLOT ══════════════ -->
+<section id="cue-100" class="cue" aria-labelledby="h-100">
+  <div class="open open--full f100 dk">
+    <div class="wrap">
+      <a class="addr rise" href="#cue-100">Cue 100</a>
+      <h2 id="h-100" class="cue-name rise d1">Working<br>Plot</h2>
+    </div>
+  </div>
+  <div class="hold h100 dk">
     <div class="wrap">
       <div class="split split--60">
         <div class="rise">
-          <p class="label">Run sheet</p>
+          <h3 class="label">Run sheet</h3>
           <div class="entry">
-            <div class="entry-head"><h3>HCA Healthcare &mdash; Analytics Engineer Intern</h3><span class="when">Oct 2025 &rarr; now</span></div>
+            <div class="entry-head"><h4>HCA Healthcare &mdash; Analytics Engineer Intern</h4><span class="when">Oct 2025 &rarr; now</span></div>
             <p class="role">Nashville, TN</p>
             <ul>
               <li>Built ETL pipelines in Databricks with PySpark on Medallion architecture, moving messy semi-structured log data through bronze, silver, and gold layers into analytics-ready datasets.</li>
@@ -903,7 +1140,7 @@ a:focus-visible,[tabindex]:focus-visible{
             </ul>
           </div>
           <div class="entry">
-            <div class="entry-head"><h3>Metlang &mdash; Analytic Linguist</h3><span class="when">Aug 2023 &rarr; Oct 2025</span></div>
+            <div class="entry-head"><h4>Metlang &mdash; Analytic Linguist</h4><span class="when">Aug 2023 &rarr; Oct 2025</span></div>
             <p class="role">Nashville, TN &middot; security clearance</p>
             <ul>
               <li>Analyzed high-volume unstructured linguistic and contextual data to identify behavioural patterns and communication trends.</li>
@@ -911,7 +1148,7 @@ a:focus-visible,[tabindex]:focus-visible{
             </ul>
           </div>
           <div class="entry">
-            <div class="entry-head"><h3>LJW Associates &mdash; Project Manager</h3><span class="when">May 2021 &rarr; May 2023</span></div>
+            <div class="entry-head"><h4>LJW Associates &mdash; Project Manager</h4><span class="when">May 2021 &rarr; May 2023</span></div>
             <p class="role">Palm Beach, FL &middot; remote</p>
             <ul>
               <li>Built data-driven process optimization workflows for remediation and restoration projects, and implemented automation that cut manual reporting time by 30%.</li>
@@ -921,19 +1158,19 @@ a:focus-visible,[tabindex]:focus-visible{
         </div>
 
         <div class="rise d1">
-          <p class="label">Reading &amp; leadership</p>
+          <h3 class="label">Reading &amp; leadership</h3>
           <div class="entry">
-            <div class="entry-head"><h3>Cornell SC Johnson College of Business</h3><span class="when">May 2026</span></div>
+            <div class="entry-head"><h4>Cornell SC Johnson College of Business</h4><span class="when">May 2026</span></div>
             <p class="role">MS Business Analytics &middot; Ithaca, NY</p>
             <p>Data science for business, machine learning, natural language processing, statistics, predictive analytics, Python, SQL, data management.</p>
           </div>
           <div class="entry">
-            <div class="entry-head"><h3>Middle Tennessee State University</h3><span class="when">May 2022</span></div>
+            <div class="entry-head"><h4>Middle Tennessee State University</h4><span class="when">May 2022</span></div>
             <p class="role">BA Foreign Languages, magna cum laude</p>
             <p>Applied statistics (A+). The linguistics background is why the NLP work reads as familiar territory rather than a detour.</p>
           </div>
           <div class="entry">
-            <div class="entry-head"><h3>Cornell Data Science Club</h3><span class="when">Aug 2025 &rarr; now</span></div>
+            <div class="entry-head"><h4>Cornell Data Science Club</h4><span class="when">Aug 2025 &rarr; now</span></div>
             <p class="role">President</p>
           </div>
         </div>
@@ -942,46 +1179,90 @@ a:focus-visible,[tabindex]:focus-visible{
   </div>
 </section>
 
-<!-- ══════════════ CUE 80 · PATCH SCHEDULE ══════════════ -->
-<section id="cue-80" class="cue" aria-labelledby="h-80">
-  <div class="open f80 dk">
+<!-- ══════════════ CUE 110 · SUPPORTING PLOT ══════════════ -->
+<section id="cue-110" class="cue" aria-labelledby="h-110">
+  <div class="open f110 dk">
     <div class="wrap">
-      <p class="addr rise">Cue 80 &middot; Near day</p>
-      <h2 id="h-80" class="cue-name rise d1">Patch<br>Schedule</h2>
+      <a class="addr rise" href="#cue-110">Cue 110</a>
+      <h2 id="h-110" class="cue-name rise d1">Supporting<br>Plot</h2>
     </div>
   </div>
-  <div class="hold h80 dk">
+  <div class="hold h110 dk">
     <div class="wrap">
-      <div class="split split--half">
-        <div class="rise">
-          <p class="label">Languages &amp; modelling</p>
-          <div class="chips">
-            <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span>
-            <span class="chip">Swift</span><span class="chip">Kotlin</span>
-            <span class="chip">scikit-learn</span><span class="chip">pandas</span><span class="chip">NumPy</span>
-            <span class="chip">matplotlib</span><span class="chip">seaborn</span>
-            <span class="chip">QLoRA / PEFT</span><span class="chip">LDA topic models</span>
-          </div>
-
-          <p class="label" style="margin-top:2.2rem">Platforms &amp; pipelines</p>
-          <div class="chips">
-            <span class="chip">Databricks</span><span class="chip">PySpark</span>
-            <span class="chip">Medallion architecture</span>
-            <span class="chip">GCP</span><span class="chip">Oracle Cloud</span>
-            <span class="chip">Docker</span><span class="chip">Azure Key Vault</span>
-            <span class="chip">SQL Server (SSMS)</span><span class="chip">SQLite</span>
-          </div>
-
-          <p class="label" style="margin-top:2.2rem">Reporting &amp; interfaces</p>
-          <div class="chips">
-            <span class="chip">Power BI</span><span class="chip">Tableau</span>
-            <span class="chip">Google Looker</span><span class="chip">Advanced Excel</span>
-            <span class="chip">SwiftUI</span><span class="chip">Jetpack Compose</span><span class="chip">Ktor</span>
-          </div>
+      <div class="rise">
+        <h3 class="label">Channel schedule &mdash; smaller work</h3>
+        <div class="tbl-scroll">
+          <table class="sched">
+            <thead>
+              <tr><th scope="col">Repository</th><th scope="col">What it does</th><th scope="col">Patch</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="https://github.com/nathanaelguitar/digital_operations">digital_operations</a></td>
+                <td>Forecast-accuracy pipeline over Walmart sales data computing MAD, MAPE, sales-to-forecast ratio, and bias, then exporting a multi-sheet Excel report built on live SUMPRODUCT formulas rather than pasted values.</td>
+                <td>Public</td>
+              </tr>
+              <tr>
+                <td>Revenue forecasting</td>
+                <td>End-to-end revenue analysis of real QuickBooks exports for small-business valuation. Revenue defined strictly as invoice issuance, normalized to monthly, with a deliberately conservative one-year projection &mdash; simple models chosen to avoid inflating a number a buyer would rely on.</td>
+                <td>Private</td>
+              </tr>
+              <tr>
+                <td>Demand management</td>
+                <td>Pricing-optimization coursework with a real ingestion and processing layer: Excel ingestion with validation, case-level to unit-level conversion, and margin, market-share, and profit metrics.</td>
+                <td>Private</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/nathanaelguitar/localai_app">localai_app</a></td>
+                <td>Kotlin Multiplatform and Compose Multiplatform scaffold for the Canopy product identity &mdash; onboarding, workspaces, personas, saved workflows. A scaffold: chat responses are stubbed behind a swappable repository interface.</td>
+                <td>Public</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/nathanaelguitar/AlphaAgent_Deck">AlphaAgent_Deck</a></td>
+                <td>A pitch deck and financial model generated from code &mdash; Python that builds the slides, the use-of-funds model, and the monthly projection workbook, so the numbers and the deck cannot drift apart.</td>
+                <td>Public</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/nathanaelguitar/canopy_publicsite">canopy_publicsite</a></td>
+                <td>The static site serving CanopyChat's privacy policy, terms, and support pages for app-store compliance. Live on GitHub Pages.</td>
+                <td>Public</td>
+              </tr>
+              <tr>
+                <td>iOS agent client</td>
+                <td>A native Swift client for driving an agent runtime from a phone, sharing a lineage with the AetherChat iOS work.</td>
+                <td>Private</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        <div class="rise d1">
-          <p class="label">Spoken</p>
+      <div class="rise d1" style="margin-top:clamp(2.5rem,6vh,4rem)">
+        <h3 class="label">Patch schedule &mdash; what runs where</h3>
+        <div class="tbl-scroll">
+          <table class="sched">
+            <thead>
+              <tr><th scope="col">Instrument</th><th scope="col">What it does here</th><th scope="col">Cue</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Python &middot; pandas &middot; NumPy &middot; scikit-learn</td><td>Modelling, feature engineering, evaluation</td><td><a href="#cue-30">30</a>, <a href="#cue-40">40</a>, <a href="#cue-70">70</a>, <a href="#cue-80">80</a></td></tr>
+              <tr><td>PySpark &middot; Databricks &middot; Medallion</td><td>Bronze&ndash;silver&ndash;gold ETL and call-level feature pipelines</td><td><a href="#cue-20">20</a>, <a href="#cue-40">40</a>, <a href="#cue-100">100</a></td></tr>
+              <tr><td>QLoRA &middot; PEFT</td><td>4-bit adapter training on a 27B base model</td><td><a href="#cue-20">20</a></td></tr>
+              <tr><td>Swift &middot; SwiftUI</td><td>iOS client and on-device inference surface</td><td><a href="#cue-10">10</a></td></tr>
+              <tr><td>Kotlin &middot; Jetpack Compose &middot; Ktor</td><td>Android client and the OpenAI-compatible proxy</td><td><a href="#cue-10">10</a></td></tr>
+              <tr><td>SQLite</td><td>On-device memory store and recursive agent memory</td><td><a href="#cue-10">10</a>, <a href="#cue-50">50</a></td></tr>
+              <tr><td>Docker &middot; Oracle Cloud Infrastructure</td><td>Moving a pipeline off a laptop onto a persistent VM</td><td><a href="#cue-60">60</a></td></tr>
+              <tr><td>SQL &middot; SQL Server &middot; Azure Key Vault</td><td>Relational reporting, credential and config management</td><td><a href="#cue-100">100</a></td></tr>
+              <tr><td>Power BI &middot; Tableau &middot; Looker &middot; Excel</td><td>Operational dashboards and live-formula reporting</td><td><a href="#cue-100">100</a></td></tr>
+              <tr><td>R</td><td>Statistics coursework</td><td>&mdash;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="split split--half rise d2" style="margin-top:clamp(2.5rem,6vh,4rem)">
+        <div>
+          <h3 class="label">Spoken</h3>
           <div class="tbl-scroll">
             <table class="sched">
               <tbody>
@@ -991,8 +1272,9 @@ a:focus-visible,[tabindex]:focus-visible{
               </tbody>
             </table>
           </div>
-
-          <p class="label" style="margin-top:2.2rem">Off the plot</p>
+        </div>
+        <div>
+          <h3 class="label">Off the plot</h3>
           <p>Audio engineering and music production, guitar, soccer, chess, and travel. The GitHub handle is older than the career and I have stopped trying to explain it.</p>
         </div>
       </div>
@@ -1000,15 +1282,15 @@ a:focus-visible,[tabindex]:focus-visible{
   </div>
 </section>
 
-<!-- ══════════════ CUE 90 · HOUSE LIGHTS ══════════════ -->
-<section id="cue-90" class="cue" aria-labelledby="h-90">
-  <div class="open f90 dk">
+<!-- ══════════════ CUE 120 · HOUSE LIGHTS ══════════════ -->
+<section id="cue-120" class="cue" aria-labelledby="h-120">
+  <div class="open open--full f120 dk">
     <div class="wrap">
-      <p class="addr rise">Cue 90 &middot; Day</p>
-      <h2 id="h-90" class="cue-name rise d1">House<br>Lights</h2>
+      <a class="addr rise" href="#cue-120">Cue 120</a>
+      <h2 id="h-120" class="cue-name rise d1">House<br>Lights</h2>
     </div>
   </div>
-  <footer class="hold h90 dk house">
+  <footer class="hold h120 dk house">
     <div class="wrap">
       <p class="lede rise" style="max-width:52ch">I am finishing a master's at Cornell in May 2026 and looking for machine learning and analytics engineering work. The fastest way to reach me is email.</p>
 
@@ -1019,16 +1301,18 @@ a:focus-visible,[tabindex]:focus-visible{
       </div>
 
       <p class="colophon rise d2">
-        Every figure on this page comes from a file in the repository it describes &mdash; metrics from
+        Every metric in the project cues comes from a file in the repository it describes &mdash;
         <span class="mono">docs/shareable-evals/</span>, <span class="mono">model_stats.json</span>, and
-        <span class="mono">baseline_eval.json</span>. Nothing is rounded in my favour and the caveats are
-        printed next to the numbers.<br>
-        Built as a lighting plot: nine cues, blackout to day. Static HTML and CSS, no framework.
+        <span class="mono">baseline_eval.json</span> among them. The run sheet is career history rather
+        than repository output. Nothing is rounded in my favour and the caveats are printed next to
+        the numbers.<br>
+        Built as a lighting plot: thirteen cues, blackout to day. Static HTML and CSS, no framework.
         &copy; 2026 Nathanael Gill.
       </p>
     </div>
   </footer>
 </section>
+
 
 </main>
 
@@ -1036,8 +1320,6 @@ a:focus-visible,[tabindex]:focus-visible{
 (function(){
   var d=document, root=d.documentElement;
   root.classList.add('js');
-
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* --- one authored moment: cues come up as they enter --- */
   var rises = d.querySelectorAll('.rise');
@@ -1055,9 +1337,7 @@ a:focus-visible,[tabindex]:focus-visible{
   /* --- cue rail: current cue --- */
   var links = Array.prototype.slice.call(d.querySelectorAll('.rail a'));
   var cues  = links.map(function(a){ return d.querySelector(a.getAttribute('href')); });
-  var names = ['Blackout','CanopyChat','Qwen on IBES','VC Scout','Agent evaluation',
-               'Dark channels','Supporting plot','Working plot','Patch schedule','House lights'];
-  var label = d.getElementById('scrubLabel');
+  var scrubLinks = Array.prototype.slice.call(d.querySelectorAll('.scrub .cues a'));
   var fill  = d.getElementById('scrubFill');
   var rail  = d.querySelector('.rail');
   var bands = Array.prototype.slice.call(d.querySelectorAll('.open, .hold, .plot'));
@@ -1085,7 +1365,14 @@ a:focus-visible,[tabindex]:focus-visible{
       links.forEach(function(a,n){
         if(n===i) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current');
       });
-      if(label) label.textContent = links[i].querySelector('.n').textContent + ' · ' + names[i];
+      scrubLinks.forEach(function(a,n){
+        if(n===i) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current');
+      });
+      /* keep the active address in view without ever scrolling the page itself */
+      var strip = scrubLinks[i] && scrubLinks[i].parentNode;
+      if(strip && strip.scrollWidth > strip.clientWidth){
+        strip.scrollLeft = scrubLinks[i].offsetLeft - (strip.clientWidth - scrubLinks[i].offsetWidth)/2;
+      }
     }
     if(fill){
       var max = d.body.scrollHeight - window.innerHeight;
