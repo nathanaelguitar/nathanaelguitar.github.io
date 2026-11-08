@@ -54,7 +54,7 @@ Real, verified from the repositories (not to be embellished):
 - **Naming** — the product is publicly **CanopyChat** and the page leads with that. `AetherChat` survives only in internal symbols and the bundle ID; do not use it in page copy.
 - **Agentic sales-automation pipeline** (private repo) — orchestrates web scraping, lead enrichment, automated email outreach, and call qualification for sourcing potential acquisition targets; migrated from local Docker to a Linux VM on Oracle Cloud Infrastructure for persistent cloud execution. Client-identifying material is under NDA; no client may be named and the repo may not be linked.
 - **Forecast accuracy pipeline** (`digital_operations`, public, 12 commits) — Walmart sales forecast ETL computing MAD, MAPE, sales-to-forecast ratio, and bias, exporting a multi-sheet Excel report built on live SUMPRODUCT formulas rather than static values.
-- **NLP / LDA topic modeling** (`NLPs`, private, 16 commits) — 24-topic LDA over the middle-1000 companies by market cap, cross-tabulated against GICS industry groups. Measured coherence: Utilities 96.2%, Insurance 95.0%, Banks 91.8%, Semiconductors 81.2%, Autos 71.4%.
+- **NLP / LDA topic modeling** (`NLPs`, public, 16 commits) — 24-topic LDA over the middle-1000 companies by market cap, cross-tabulated against GICS industry groups. Measured coherence: Utilities 96.2%, Insurance 95.0%, Banks 91.8%, Semiconductors 81.2%, Autos 71.4%.
 - **Professional background** — HCA Healthcare Analytics Engineer Intern (Databricks/PySpark Medallion ETL, Power BI, Azure Key Vault monitoring); Metlang Analytic Linguist with security clearance; LJW Associates project manager. Cornell MSBA, completed 2026, MTSU BA Foreign Languages magna cum laude.
 - **Leadership** — President, Cornell Data Science Club (Aug 2025–present).
 
@@ -90,7 +90,7 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - `VisionClaw` is not his work. Never include it.
 - The private "iOS agent client" row was removed at his request.
 - `Demand_Management` was public from 2026-08-13 after untracking `bana6390_u3_answer.md`, `q4_answer.md`, `q5_answer.md`, `__pycache__`.
-- 2026-11-08: `local_ai_aether`, `ML_Class_LORA`, `NLPs`, `digital_retail_operations`, and `Demand_Management` went private; the owner later re-opened `digital_retail_operations` and `Demand_Management`. `NLPs` stays unpatched until its licensed data is removed.
+- 2026-11-08: `local_ai_aether`, `ML_Class_LORA`, `NLPs`, `digital_retail_operations`, and `Demand_Management` went private; the owner later re-opened `digital_retail_operations` and `Demand_Management`. `NLPs` was re-opened as-is (owner: school projects are fair game; only company IP, trade secrets and the Qwen/IBES financial data stay private).
 - `Predictive_Analytics` **must not be made public as-is**: `data/2021_sales.xls` through `2025_sales.xls` and `data/sales.desc` are committed real QuickBooks exports containing a customer-name column, directly contradicting that repo's own `.gitignore` ("Data files (confidential)"), its `data/README.md` ("excluded from version control for confidentiality"), and its `scripts/check_no_data_committed.py` guard. Flipping a private repo to public exposes full history, so untracking at HEAD is not sufficient.
 
 ## Corrections logged 2026-08-13 (second round)
