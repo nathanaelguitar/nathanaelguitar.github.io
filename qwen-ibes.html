@@ -20,14 +20,15 @@
   --bg:#060B22; --bg2:#071640; --ink:#FFFFFF; --dim:#A8B8F0; --faint:#8FA0D8; --rule:rgba(168,184,240,.28); --cobalt:#0A2BFF;
   --sans:"Saira",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
-  --gut:16px; --measure:66ch;
+  --gut:16px; --measure:72ch;
 }
 *{box-sizing:border-box}
 html{background:var(--bg);-webkit-text-size-adjust:100%}
 body{margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg) 0,var(--bg2) 100%) fixed;color:var(--ink);font-family:var(--sans);font-weight:400;font-size:1.125rem;line-height:1.7;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--cobalt);color:#fff}
-.wrap{max-width:calc(var(--measure) + 2*var(--gut));margin:0 auto;padding:2rem var(--gut) 6rem}
-@media (min-width:900px){.wrap{padding-top:3.5rem}}
+.page{max-width:94rem;margin:0 auto;padding:2rem var(--gut) 6rem}
+.layout{display:block}
+.toc{display:none}
 
 .back{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:var(--dim);text-decoration:none;padding:.35rem 0}
 .back:hover{color:var(--ink);text-decoration:underline;text-underline-offset:.3em}
@@ -38,9 +39,10 @@ h1 .sub{display:block;margin-top:.7rem;font-weight:300;font-size:clamp(1.15rem,1
 .by{max-width:none;font-size:.98rem;font-weight:400;color:var(--dim);margin:0 0 2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--rule)}
 .by .sep{margin:0 .55em;color:var(--faint)}
 
-h2{font-family:var(--sans);font-weight:600;font-size:1.4rem;line-height:1.25;letter-spacing:-.005em;text-wrap:balance;margin:3.25rem 0 .9rem}
-p{margin:0 0 1.15rem;max-width:var(--measure);text-wrap:pretty;hyphens:manual}
+h2{scroll-margin-top:2rem;font-family:var(--sans);font-weight:600;font-size:1.4rem;line-height:1.25;letter-spacing:-.005em;text-wrap:balance;margin:3.25rem 0 .9rem}
+p{margin:0 0 1.15rem;max-width:none;text-wrap:pretty;hyphens:manual}
 
+.body{max-width:var(--measure)}
 .abstract{margin:0 0 .5rem;padding:0 0 1.2rem;border-bottom:1px solid var(--rule)}
 .abstract h2{margin-top:0;font-size:1.15rem;letter-spacing:.01em;color:var(--dim)}
 .abstract p{font-size:1.06rem;line-height:1.68}
@@ -60,6 +62,32 @@ tbody tr:last-child td{border-bottom-color:var(--dim)}
 a{color:var(--ink);text-underline-offset:.22em;text-decoration-thickness:1px}
 a:hover{text-decoration-thickness:2px}
 a:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:2px}
+
+@media (min-width:1000px){
+  body{font-size:1.375rem;line-height:1.72}
+  .page{padding:3.5rem clamp(2rem,5vw,6rem) 8rem}
+  .head{max-width:none;margin-bottom:0}
+  h1{font-size:clamp(2.6rem,1.4rem + 2.2vw,4rem);max-width:22ch;margin-top:3rem}
+  h1 .sub{font-size:clamp(1.4rem,1rem + .9vw,2.05rem);max-width:30ch}
+  .by{font-size:1.05rem;margin-bottom:3.25rem}
+  .layout{display:grid;grid-template-columns:15rem minmax(0,1fr);column-gap:clamp(3rem,6vw,7rem);align-items:start}
+  .toc{display:block;position:sticky;top:2.5rem;font-size:.95rem;line-height:1.35}
+  .toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--rule)}
+  .toc a{display:block;padding:.5rem 0 .5rem 1rem;margin-left:-1px;border-left:2px solid transparent;color:var(--dim);text-decoration:none}
+  .toc a:hover{color:var(--ink)}
+  .toc a[aria-current]{color:var(--ink);border-left-color:var(--ink);font-weight:500}
+  h2{font-size:1.65rem;margin-top:3.75rem}
+  .abstract h2{font-size:1.3rem}
+  .abstract p{font-size:1.18rem}
+  th,td{padding-top:.85rem;padding-bottom:.85rem}
+  thead th{font-size:.95rem}
+  td.n{font-size:1.05rem}
+  .foot{font-size:1rem}
+}
+@media (min-width:1700px){
+  body{font-size:1.5rem}
+  .toc{font-size:1rem}
+}
 @media (max-width:560px){
   body{font-size:1.06rem;line-height:1.68}
   h2{margin-top:2.6rem;font-size:1.28rem}
@@ -72,17 +100,24 @@ a:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:2px}
   td.win{color:#000!important}
   th,td,.by,.abstract,.foot{border-color:#999!important}
   a{color:#000}
-  .wrap{max-width:none;padding:0}
+  .page{max-width:none;padding:0}
+  .toc{display:none!important}
+  .layout{display:block!important}
   body{font-size:11pt}
 }
 </style>
 </head>
 <body>
-<main class="wrap">
+<main>
+<div class="page">
+<header class="head">
 <a class="back" href="./#cue-20">&larr; Back to the portfolio</a>
 <h1>Fine-Tuning <span class="nb">Qwen3.6-27B</span> on IBES Analyst Revisions:<span class="sub"> Separating Schema Compliance from Classification Performance</span></h1>
 <p class="by">Nathanael Gill<span class="sep" aria-hidden="true">&middot;</span>Cornell MSBA<span class="sep" aria-hidden="true">&middot;</span>June 2026</p>
-
+</header>
+<div class="layout">
+<nav class="toc" aria-label="Sections"><ol><li><a href="#abs">Abstract</a></li><li><a href="#s1">1. Methodology</a></li><li><a href="#s2">2. Holdout Results</a></li><li><a href="#s3">3. Training Scale and Generalization</a></li><li><a href="#s4">4. Label Construction and Leakage Risk</a></li><li><a href="#s5">5. Discussion and Future Work</a></li><li><a href="#s6">Data Availability</a></li></ol></nav>
+<div class="body">
 <section class="abstract" aria-labelledby="abs">
 <h2 id="abs">Abstract</h2>
 <p>I investigate the effects of QLoRA fine-tuning on Qwen3.6-27B using analyst estimate-revision events from WRDS/IBES. I construct the dataset through a PySpark bronze-silver-gold pipeline and evaluate the resulting adapter against the base model on a 1,000-event holdout.</p>
@@ -90,12 +125,12 @@ a:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:2px}
 <p>I further compare adapters trained on 1k and 10k events. Both achieve perfect holdout accuracy, while the larger adapter performs worse on most of four public sentiment benchmarks. These results distinguish gains in task execution from evidence of improved financial reasoning or generalization.</p>
 </section>
 
-<h2>1. Methodology</h2>
+<h2 id="s1">1. Methodology</h2>
 <p>Each observation represents an analyst estimate-revision event. The model receives event-level information and produces a JSON object containing a directional classification (positive, neutral, negative) and a magnitude bucket.</p>
 <p>I derive directional labels from changes in analyst consensus. Changes below a defined threshold receive a neutral label; otherwise, the sign determines the direction.</p>
 <p>This label construction is central to interpreting the results. Because the consensus-change value used to determine the label is present in the input, the classification is close to deterministic. The experiment therefore evaluates the model&rsquo;s ability to execute a defined classification rule and produce structured outputs, rather than forecast future analyst behavior.</p>
 <p>I construct the dataset from raw WRDS pulls using a PySpark bronze-silver-gold pipeline. The evaluation uses a random split with a fixed seed. QLoRA training runs in 4-bit on a single NVIDIA DGX Spark. I evaluate the base model and adapter using identical holdout events, prompts, nonthinking mode, and temperature zero.</p>
-<h2>2. Holdout Results</h2>
+<h2 id="s2">2. Holdout Results</h2>
 <div class="tbl"><table>
 <thead><tr><th scope="col">1,000-event holdout</th><th scope="col" class="n">Base</th><th scope="col" class="n">Adapter</th></tr></thead>
 <tbody>
@@ -107,7 +142,7 @@ a:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:2px}
 <p>The base model produces parseable responses for 466 of 1,000 events. Its positive and negative classifications are correct on all 447 of 447 calls for which it returns a direction.</p>
 <p>Failures are concentrated in the neutral class. Of 351 neutral events, 332 produce unparseable responses. Of the remaining 19, 17 are classified as negative.</p>
 <p>These findings indicate that fine-tuning primarily improves schema compliance and neutral-class handling. The improvement in aggregate accuracy should not be interpreted as a corresponding improvement in financial reasoning.</p>
-<h2>3. Training Scale and Generalization</h2>
+<h2 id="s3">3. Training Scale and Generalization</h2>
 <p>I compare adapters trained on 1k and 10k events. Both achieve 1.000 holdout accuracy, while exact JSON match increases from 0.994 to 0.999.</p>
 <p>I also evaluate both adapters on four public sentiment benchmarks, using 64 examples per benchmark.</p>
 <div class="tbl"><table>
@@ -120,19 +155,25 @@ a:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:2px}
 </tbody></table></div>
 <p>The 10k adapter performs worse on most benchmarks. The FPB decline corresponds to 11 neutral sentences being classified as positive. I find no evidence of IBES-style JSON leaking into the public benchmark outputs.</p>
 <p>Given the sample size of 64 examples per benchmark, these comparisons provide directional evidence rather than conclusive evidence of generalization loss. The table compares the two fine-tuned adapters, not the base model.</p>
-<h2>4. Label Construction and Leakage Risk</h2>
+<h2 id="s4">4. Label Construction and Leakage Risk</h2>
 <p>Two methodological considerations limit the interpretation of the holdout results.</p>
 <p>First, the directional label is derived from a consensus-change value already supplied to the model. This creates direct access to the information needed to recover the target. While appropriate for evaluating deterministic classification and structured-output reliability, it does not establish predictive performance on unseen future outcomes.</p>
 <p>Second, the random event-level split does not explicitly isolate companies or chronological periods. Related revisions may therefore appear in both training and holdout data. This introduces a potential source of train-test contamination, although its effect on the reported results has not been quantified.</p>
 <p>These limitations are distinct. The first concerns the relationship between input features and the target definition. The second concerns independence between training and evaluation observations.</p>
-<h2>5. Discussion and Future Work</h2>
+<h2 id="s5">5. Discussion and Future Work</h2>
 <p>The principal result is not simply that fine-tuning achieves perfect holdout accuracy. It is that error decomposition substantially changes the interpretation of that result.</p>
 <p>The base model&rsquo;s failures are dominated by invalid output formatting and neutral-class errors. Fine-tuning resolves these failures, but the deterministic label construction prevents the resulting accuracy from serving as evidence of forecasting ability.</p>
 <p>Future evaluation should introduce company-held-out and chronological splits, a more challenging neutral-class definition, and independent magnitude evaluation. The base model should also be evaluated on the same public sentiment slices to establish a complete comparison.</p>
-<h2>Data Availability</h2>
+<h2 id="s6">Data Availability</h2>
 <p>WRDS/IBES is licensed data. The repository contains code and aggregate metrics only. Raw records, predictions, adapters, and checkpoints are not distributed.</p>
 
 <p class="foot">Code and aggregate metrics: <a href="https://github.com/nathanaelguitar/qwen-ibes-qlora">qwen-ibes-qlora</a>.</p>
+</div>
+</div>
+</div>
 </main>
+<script>
+(function(){var l=[].slice.call(document.querySelectorAll(".toc a"));if(!("IntersectionObserver" in window)||!l.length)return;var m={};l.forEach(function(a){m[a.getAttribute("href").slice(1)]=a});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){l.forEach(function(a){a.removeAttribute("aria-current")});m[e.target.id].setAttribute("aria-current","true")}})},{rootMargin:"-15% 0px -70% 0px"});Object.keys(m).forEach(function(id){io.observe(document.getElementById(id))})})();
+</script>
 </body>
 </html>
