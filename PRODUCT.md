@@ -138,3 +138,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - 2026-11-08: the hero says "a multiplatform on-device LLM app" (was "on two platforms"); CanopyChat now ships beyond iOS and Android. Data Programming (BANA 5440, Python) and Data Architecture (BANA 6550, SQL) are different classes and stay as separate rows.
 
 - 2026-11-08: `data-architecture-sql` now carries the full SQLiteStudio history (846 runs, 660 distinct) in `history/` beside the 182 curated final queries in `queries/`. Always say the queries are hand-written (owner: "huge note").
+
+- 2026-11-08: the Cornell MSBA completion date is **August 2026** (the education entry said May 2026; the owner corrected it).
