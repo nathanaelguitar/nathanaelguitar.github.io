@@ -588,7 +588,8 @@ a:focus-visible,[tabindex]:focus-visible{
       <div class="split split--60">
         <div>
           <p class="lede rise">A private, local-first AI chat app that runs the model on your phone. Two full native codebases &mdash; SwiftUI on iOS, Kotlin and Jetpack Compose on Android &mdash; over a shared inference layer, with an optional Ktor proxy when you want a server.</p>
-          <p class="rise">Quantized GGUF weights run on-device through llama.cpp, so conversations never leave the handset. Above that sit a SQLite memory store with full-text recall, a ChatML prompt builder, web-search intent detection and ranking for questions the local model cannot answer from memory, title generation, and loop detection.</p>
+          <p class="rise">Quantized GGUF weights run on-device through llama.cpp, so conversations stay on the handset by default. Above that sit a SQLite memory store with full-text recall, a ChatML prompt builder, web-search intent detection and ranking for questions the local model cannot answer from memory, title generation, and loop detection.</p>
+          <p class="rise">The local model stays the voice, and it can ask for help. A Create ML classifier recognizes harder questions &mdash; multi-step math, planning, code &mdash; and routes them to an advisor on Apple&rsquo;s Private Cloud Compute, which returns guidance for the local model to write the answer from. The advisor is off until the user opts in, and it can be switched off again in Settings. The only other path off the device is web search, which sends a query to a search service.</p>
           <p class="rise">The Android port is not a wrapper. The domain layer is ported from the Swift source file for file, down to a JNI wrapper that builds llama.cpp for arm64 and loads both a language model and a vision projector.</p>
 
           <div class="chips rise d1">
@@ -1051,10 +1052,10 @@ a:focus-visible,[tabindex]:focus-visible{
           </div>
 
           <div class="patch rise d1">
-            <span class="jack jack--dark">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.75" y="10.75" width="14.5" height="9.5"/><path d="M8.25 10.75V7.5a3.75 3.75 0 0 1 7.5 0v3.25"/></svg>
-              <span>Not patched &middot; private</span>
-            </span>
+            <a class="jack" href="https://github.com/nathanaelguitar/digital_retail_operations">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.5 14.5 5.75 18.25a3.18 3.18 0 0 0 4.5 4.5"/><path d="M14.5 9.5l3.75-3.75a3.18 3.18 0 0 1 4.5 4.5"/><path d="M9 15l6-6"/></svg>
+              <span>digital_retail_operations</span>
+            </a>
           </div>
         </div>
 
@@ -1218,9 +1219,9 @@ a:focus-visible,[tabindex]:focus-visible{
                 <td>Private</td>
               </tr>
               <tr>
-                <td>Demand_Management</td>
+                <td><a href="https://github.com/nathanaelguitar/Demand_Management">Demand_Management</a></td>
                 <td>Pricing-optimization coursework with a real ingestion and processing layer: Excel ingestion with validation, case-level to unit-level conversion, and margin, market-share, and profit metrics.</td>
-                <td>Private</td>
+                <td>Public</td>
               </tr>
               <tr>
                 <td><a href="https://github.com/nathanaelguitar/AlphaAgent_Deck">AlphaAgent_Deck</a></td>
