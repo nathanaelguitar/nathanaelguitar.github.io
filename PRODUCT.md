@@ -117,6 +117,6 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 
 - CanopyChat privacy wording: never say conversations "never leave the device". Accurate: on-device by default; opt-in Apple Private Cloud Compute advisor (a flex, shipped as good engineering); web search sends a query.
 
-- Cue 50 carries the owner's own claim, in his voice: he built DB-backed agent memory before it was common, while others still used markdown files. It is his assertion; no dated commit backs it on this page. Add a month/year if one is found.
+- Cue 50 carries the owner's own claim, in his voice: he built DB-backed agent memory before it was common, while others still used markdown files. Dated February 2026 per the owner (confirmed 2026-11-08); the fork was created 2026-02-21.
 
 - R skill is evidenced by `q4_optimal_price.R` and `q5_implied_values.R` in `Demand_Management` (recovered from VS Code local history 2026-11-08, committed to the repo, both run end to end). The earlier "R: statistics coursework" row was replaced.
