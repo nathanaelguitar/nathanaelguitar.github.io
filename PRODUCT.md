@@ -130,3 +130,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - 2026-11-08: `qwen-ibes.html` was unpublished at the owner's request (no time to improve it now). The draft is saved locally at `~/qwen-ibes-paper-draft.html`. It remains in this repo's git history. Re-publish only if the owner asks.
 
 - 2026-11-08 (later): the owner supplied a stronger, formal version of the Qwen/IBES paper; it is republished at `qwen-ibes.html` and linked from cue 20 again, dated May 2026. Its claims were checked against `scripts/ibes_pipeline.py`: `consensus_delta` is in the model input and the label is a threshold on it; the split is a seeded random sample with no company or time grouping. Note: the "1k" split is 800 train / 100 eval / 100 holdout rows; the "10k" split is 10,000 / 1,000 / 1,000.
+
+- 2026-11-08: added `bana5440-yelp-analysis` (public) to the projects table. Fall 2025 coursework (BANA 5440 Introduction to Data Programming, Assignment 2), hand-written by the owner. Always label it as fall 2025 coursework, not recent work. The Yelp Open Dataset CSVs are deliberately not in the repo (Yelp licence).
