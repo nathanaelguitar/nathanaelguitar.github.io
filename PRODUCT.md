@@ -134,3 +134,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - 2026-11-08: added `bana5440-yelp-analysis` (public) to the projects table. Fall 2025 coursework (BANA 5440 Data Programming, Assignment 2), hand-written by the owner. Always label it as fall 2025 coursework, not recent work. The Yelp Open Dataset CSVs are deliberately not in the repo (Yelp licence).
 
 - 2026-11-08: added `data-architecture-sql` (public): 182 curated queries exported from SQLiteStudio history, BANA 6550 Data Architecture, dated May to Sept 2025 (not recent). The owner prefers the course names "Data Programming" and "Data Architecture" without "Introduction to" or "and Acquisition". Course databases are not redistributed.
+
+- 2026-11-08: the hero says "a multiplatform on-device LLM app" (was "on two platforms"); CanopyChat now ships beyond iOS and Android. Data Programming (BANA 5440, Python) and Data Architecture (BANA 6550, SQL) are different classes and stay as separate rows.
