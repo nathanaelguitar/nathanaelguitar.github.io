@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Qwen3.6-27B on IBES — Nathanael Gill</title>
+<title>Qwen3.6-27B on IBES | Nathanael Gill</title>
 <meta name="description" content="A one-page note on fine-tuning Qwen3.6-27B on WRDS/IBES analyst revisions: accuracy went from 0.449 to 1.000, and most of that was formatting.">
 <meta name="author" content="Nathanael Gill">
 <meta property="og:title" content="I fine-tuned a 27B model on IBES. Most of the score was formatting.">
@@ -49,13 +49,15 @@ a{color:var(--ink)}
 <p class="by">Nathanael Gill &middot; Cornell MSBA &middot; November 2026</p>
 
 <h2>The short version</h2>
-<p>I QLoRA fine-tuned Qwen3.6-27B on analyst estimate-revision events from WRDS/IBES. Tested it on a 1,000-event holdout. Accuracy went from 0.449 to 1.000.</p>
-<p>Sounds impressive. But most of that jump was formatting. When the base model did answer, it got the direction right. It just wasn&rsquo;t answering in the JSON format I asked for. I wanted to separate actual improvement from schema compliance.</p>
+<p>I QLoRA fine-tuned Qwen3.6-27B on analyst estimate-revision events from WRDS/IBES and evaluated it on a 1,000-event holdout. Accuracy went from 0.449 to 1.000.</p>
+<p>The score is real. But most of the improvement is formatting, not financial reasoning.</p>
+<p>The base model was already getting the direction right when it returned a valid answer. The adapter mostly learned to follow the JSON schema and handle neutral correctly. I wanted to measure how much of the improvement was actually meaningful.</p>
 
 <h2>Setup</h2>
-<p>Each event is an analyst revision record. The model reads it and returns JSON with a direction (positive, neutral, negative) and a magnitude bucket.</p>
-<p>I built the dataset using a PySpark bronze-silver-gold pipeline from raw WRDS pulls. Labels come from the change in consensus. Below a threshold is neutral. Otherwise, the sign determines the direction.</p>
-<p>Random split, fixed seed. Training ran in 4-bit on one NVIDIA DGX Spark. I tested the base and adapter on the same holdout, same prompt, nonthinking mode, temperature zero.</p>
+<p>Each event is an analyst revision record. The model reads the event and returns JSON with a direction (positive, neutral, negative) and a magnitude bucket.</p>
+<p>I used a PySpark bronze-silver-gold pipeline to build the events from raw WRDS pulls. Labels come from the change in consensus. Below a threshold, the label is neutral. Otherwise, it takes the sign.</p>
+<p>Random split with a fixed seed. Training ran in 4-bit on one NVIDIA DGX Spark.</p>
+<p>I evaluated the base and adapter on the same holdout, same prompt, nonthinking mode, temperature zero.</p>
 
 <h2>The headline</h2>
 <div class="tbl"><table>
@@ -66,17 +68,21 @@ a{color:var(--ink)}
 <tr><td>Macro F1</td><td class="n">0.541</td><td class="n">1.000</td></tr>
 <tr><td>Unparseable output</td><td class="n">53.4%</td><td class="n">0.0%</td></tr>
 </tbody></table></div>
-<p>A perfect score on a financial task is suspicious. So I looked at what was actually happening.</p>
+<p>1.000 accuracy looks great. But a perfect score on a financial task deserves some scrutiny.</p>
 
 <h2>What the base model was actually doing</h2>
-<p>The base model returned parseable answers on 466 of 1,000 events. When it gave a direction, it was right every time: 447 of 447 positive and negative calls.</p>
-<p>Neutral was the problem. 332 of 351 neutral events came back unparseable. Of the other 19, 17 were called negative.</p>
-<p>So what did the adapter actually learn? Mostly to follow instructions. It learned to always return valid JSON and to treat neutral as a valid answer.</p>
-<p>The label is just a threshold applied to a number already in the input. Once the formatting is fixed, a perfect score makes sense. This doesn&rsquo;t mean I trained a financial forecaster. It means the task is close to deterministic.</p>
+<p>The base model returned parseable answers on 466 of 1,000 events.</p>
+<p>Here&rsquo;s the interesting part. When it actually returned a direction, it was correct every time. 447 of 447 positive and negative calls.</p>
+<p>Neutral was the problem. 332 of 351 neutral events were unparseable. Of the other 19, 17 were classified as negative.</p>
+<p>So the adapter didn&rsquo;t suddenly learn to understand analyst revisions. It mostly learned to return valid JSON consistently and recognize neutral as an actual answer.</p>
+<p>And the task itself matters here. The label is determined by applying a threshold to a number already in the input. Once the formatting issue is fixed, perfect accuracy isn&rsquo;t particularly surprising.</p>
+<p>This is close to a deterministic classification task. It&rsquo;s not evidence that I built a financial forecaster.</p>
 
 <h2>More data bought almost nothing on the holdout</h2>
-<p>I trained on 1k and 10k events. Both runs hit 1.000 accuracy on the holdout. Exact JSON match went from 0.994 to 0.999. Ten times the data for half a point.</p>
-<p>And there was a tradeoff. On four public sentiment benchmarks (64 examples each), the bigger run was mostly a little worse.</p>
+<p>I compared a 1k-event run against a 10k-event run.</p>
+<p>Both scored 1.000 accuracy on the holdout. Exact JSON match improved from 0.994 to 0.999.</p>
+<p>Ten times the training data for half a point. Not much.</p>
+<p>And the larger run actually did a little worse on most of the four public sentiment benchmarks (64 examples each).</p>
 <div class="tbl"><table>
 <caption>Accuracy, 64 examples per benchmark</caption>
 <thead><tr><th scope="col">Benchmark</th><th scope="col" class="n">1k run</th><th scope="col" class="n">10k run</th></tr></thead>
@@ -86,15 +92,18 @@ a{color:var(--ink)}
 <tr><td>TFNS</td><td class="n">0.750</td><td class="n">0.695</td></tr>
 <tr><td>NWGI</td><td class="n">0.609</td><td class="n">0.625</td></tr>
 </tbody></table></div>
-<p>The FPB drop came from 11 neutral sentences flipping to positive. I found no sign of IBES-style JSON leaking into the public benchmarks.</p>
-<p>Also, these are small samples. At 64 examples, a benchmark can move by five or six answers. So I wouldn&rsquo;t call this proof of anything. It&rsquo;s a direction worth investigating.</p>
-<p>And to be clear, this table compares the two adapters, not the base model.</p>
+<p>The FPB drop came from 11 neutral sentences flipping to positive.</p>
+<p>I also checked for IBES-style JSON leaking into the public benchmarks. Found no sign of it.</p>
+<p>These are small samples, though. At 64 examples, a benchmark can move by five or six answers. I wouldn&rsquo;t treat this as proof. It&rsquo;s a signal worth investigating.</p>
+<p>Also worth clarifying: this table compares the two adapters, not the base model.</p>
 
 <h2>What I would do next</h2>
-<p>I&rsquo;d split by company and time. I don&rsquo;t want the model leaning on firms it has already seen. I&rsquo;d also make neutral harder than a simple threshold, evaluate magnitude separately, and run the base model on those same public benchmarks.</p>
+<p>I&rsquo;d split by company and time instead of relying on a random split. I don&rsquo;t want the model leaning on firms it has already seen.</p>
+<p>I&rsquo;d also make neutral more challenging than a simple threshold, evaluate magnitude separately, and run the base model on the same public benchmark slices.</p>
+<p>That would give me a more complete comparison of what the fine-tuning actually improved.</p>
 
 <h2>Data</h2>
-<p>WRDS/IBES is licensed data. The repository contains code and aggregate metrics only. No raw records, predictions, adapters, or checkpoints.</p>
+<p>WRDS/IBES is licensed data. The repository includes code and aggregate metrics only. No raw records, predictions, adapters, or checkpoints.</p>
 
 <p class="foot">Numbers come from the aggregate metrics files in the project repository: the 10k holdout run, the 1k-on-10k run, and the public benchmark runs.</p>
 </main>
