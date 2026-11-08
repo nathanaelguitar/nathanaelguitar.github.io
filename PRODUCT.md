@@ -126,3 +126,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - 2026-11-08: Qwen/IBES went public as `qwen-ibes-qlora`, a cleaned recreation (SSH docs, relay IPs, teammate emails removed from history; commit dates original). The owner reversed the earlier "Qwen finance stays private" exception; WRDS data is still never published. One-page paper at `qwen-ibes.html`, voiced by ChatGPT Writing Style.
 
 - 2026-11-08: the owner removed the "Read the paper" link from cue 20 (paper judged weak). `qwen-ibes.html` still exists but is not linked from the portfolio. Do not re-add the link.
+
+- 2026-11-08: `qwen-ibes.html` was unpublished at the owner's request (no time to improve it now). The draft is saved locally at `~/qwen-ibes-paper-draft.html`. It remains in this repo's git history. Re-publish only if the owner asks.
