@@ -136,3 +136,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - 2026-11-08: added `data-architecture-sql` (public): 182 curated queries exported from SQLiteStudio history, BANA 6550 Data Architecture, dated May to Sept 2025 (not recent). The owner prefers the course names "Data Programming" and "Data Architecture" without "Introduction to" or "and Acquisition". Course databases are not redistributed.
 
 - 2026-11-08: the hero says "a multiplatform on-device LLM app" (was "on two platforms"); CanopyChat now ships beyond iOS and Android. Data Programming (BANA 5440, Python) and Data Architecture (BANA 6550, SQL) are different classes and stay as separate rows.
+
+- 2026-11-08: `data-architecture-sql` now carries the full SQLiteStudio history (846 runs, 660 distinct) in `history/` beside the 182 curated final queries in `queries/`. Always say the queries are hand-written (owner: "huge note").
