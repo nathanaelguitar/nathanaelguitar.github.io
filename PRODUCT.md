@@ -62,10 +62,10 @@ Absences that must not be fabricated: no stars, no downloads, no users, no press
 
 Added after the first review round (all verified in the repositories):
 
-- **Retail operations** (`digital_retail_operations`, private) — five notebooks: ingestion and quality checks, demand patterns/EDA, basket analysis and cross-sell, forecasting and staffing model, operational recommendations. Real committed outputs: `association_rules.csv`, `staffing_plan.csv`, `hourly_profile.csv`, `weekday_hour_profile.csv`, `top_products.csv`, `executive_summary.csv`, plus demand-pattern and staffing-heatmap figures. Low commit count (3) but substantial content — commit count is not a proxy for depth here.
+- **Retail operations** (`digital_retail_operations`, public) — five notebooks: ingestion and quality checks, demand patterns/EDA, basket analysis and cross-sell, forecasting and staffing model, operational recommendations. Real committed outputs: `association_rules.csv`, `staffing_plan.csv`, `hourly_profile.csv`, `weekday_hour_profile.csv`, `top_products.csv`, `executive_summary.csv`, plus demand-pattern and staffing-heatmap figures. Low commit count (3) but substantial content — commit count is not a proxy for depth here.
 - **Supply chain optimization** (`Supply_Chain`, public, 20 commits) — graduate coursework: inventory optimization to maximise supply-chain efficiency, and production capacity allocation under constraint. Python plus Excel deliverables. **The repository also contains assignment briefs and `U2_ANSWER_KEY.txt`; the user was told to prune these.** Featured at the user's explicit request after the exclusion was raised.
 - **Revenue forecasting** (`Predictive_Analytics`, private, 7 commits) — real QuickBooks exports; revenue defined strictly as invoice issuance, normalized monthly, deliberately conservative one-year projection with complex models avoided to prevent inflated valuation inputs. Private; no client named.
-- **Demand management** (`Demand_Management`, private, 11 commits) — pricing-optimization coursework with an ingestion layer (Excel read/validate) and processing layer (case-level to unit-level, margin/market-share/profit metrics).
+- **Demand management** (`Demand_Management`, public, 11 commits) — pricing-optimization coursework with an ingestion layer (Excel read/validate) and processing layer (case-level to unit-level, margin/market-share/profit metrics).
 - **AlphaAgent_Deck** (public, 4 commits) — Python that generates a pitch deck, use-of-funds model, and monthly projection workbook from code.
 - **VisionClaw is NOT the user's work** and must never appear. Removed 2026-08-13 on the user's correction.
 
@@ -90,7 +90,7 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - `VisionClaw` is not his work. Never include it.
 - The private "iOS agent client" row was removed at his request.
 - `Demand_Management` was public from 2026-08-13 after untracking `bana6390_u3_answer.md`, `q4_answer.md`, `q5_answer.md`, `__pycache__`.
-- 2026-11-08: `local_ai_aether`, `ML_Class_LORA`, `NLPs`, `digital_retail_operations`, and `Demand_Management` are now private; the page shows them as unpatched channels, with no links.
+- 2026-11-08: `local_ai_aether`, `ML_Class_LORA`, `NLPs`, `digital_retail_operations`, and `Demand_Management` went private; the owner later re-opened `digital_retail_operations` and `Demand_Management`. `NLPs` stays unpatched until its licensed data is removed.
 - `Predictive_Analytics` **must not be made public as-is**: `data/2021_sales.xls` through `2025_sales.xls` and `data/sales.desc` are committed real QuickBooks exports containing a customer-name column, directly contradicting that repo's own `.gitignore` ("Data files (confidential)"), its `data/README.md` ("excluded from version control for confidentiality"), and its `scripts/check_no_data_committed.py` guard. Flipping a private repo to public exposes full history, so untracking at HEAD is not sufficient.
 
 ## Corrections logged 2026-08-13 (second round)
@@ -114,3 +114,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 
 - Data Engineer added to the closing cue's role list, alongside Data Scientist, AI Engineer, Forward Deployed Engineer, AI/ML Developer, AI Consultant, Analytics Engineer — all from the user's own stated open-to-work titles plus his explicit adds (FDE, Data Engineer).
 - Fastest way to reach him is LinkedIn, not email — copy and contact-row order both updated so LinkedIn leads.
+
+- CanopyChat privacy wording: never say conversations "never leave the device". Accurate: on-device by default; opt-in Apple Private Cloud Compute advisor (a flex, shipped as good engineering); web search sends a query.
