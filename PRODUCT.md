@@ -124,3 +124,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - Do not add disclaimers like "no download or user numbers are claimed" to the page; the owner removed that line as self-undermining (2026-11-08).
 
 - 2026-11-08: Qwen/IBES went public as `qwen-ibes-qlora`, a cleaned recreation (SSH docs, relay IPs, teammate emails removed from history; commit dates original). The owner reversed the earlier "Qwen finance stays private" exception; WRDS data is still never published. One-page paper at `qwen-ibes.html`, voiced by ChatGPT Writing Style.
+
+- 2026-11-08: the owner removed the "Read the paper" link from cue 20 (paper judged weak). `qwen-ibes.html` still exists but is not linked from the portfolio. Do not re-add the link.
