@@ -860,6 +860,7 @@ a:focus-visible,[tabindex]:focus-visible{
         <div>
           <p class="lede rise">Agents forget everything between sessions. I extended the open-source OpenClaw agent codebase with memory that survives the run: SQLite for structured storage, embedding-based semantic search for retrieval, and time-aware context assembly.</p>
           <p class="rise">The two halves matter separately. Structured storage answers <em>what happened and when</em>, which a vector index is bad at; embedding search answers <em>what was this about</em>, which a SQL predicate is bad at. Assembling both into a time-aware window is what lets an agent pull its own prior logs into a later run instead of starting cold.</p>
+          <p class="rise">I built this <strong>before</strong> it was the obvious move. While most agent projects were still keeping memory in markdown files, I was putting it in a database.</p>
 
           <div class="chips rise d1">
             <span class="chip">SQLite</span>
