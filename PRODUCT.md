@@ -116,3 +116,5 @@ No user-specific requirement was established. Standard obligations apply: WCAG A
 - Fastest way to reach him is LinkedIn, not email — copy and contact-row order both updated so LinkedIn leads.
 
 - CanopyChat privacy wording: never say conversations "never leave the device". Accurate: on-device by default; opt-in Apple Private Cloud Compute advisor (a flex, shipped as good engineering); web search sends a query.
+
+- Cue 50 carries the owner's own claim, in his voice: he built DB-backed agent memory before it was common, while others still used markdown files. It is his assertion; no dated commit backs it on this page. Add a month/year if one is found.
